@@ -335,27 +335,8 @@ ul.tags li {
   width: 100%;
   overflow: hidden;
   position: relative;
-}
-
-.tech-icons-scroll::before,
-.tech-icons-scroll::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 50px;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.tech-icons-scroll::before {
-  left: -1px;
-  background: linear-gradient(to right, var(--bg-color), transparent);
-}
-
-.tech-icons-scroll::after {
-  right: -1px;
-  background: linear-gradient(to left, var(--bg-color), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 50px, black calc(100% - 50px), transparent);
+  mask-image: linear-gradient(to right, transparent, black 50px, black calc(100% - 50px), transparent);
 }
 
 .tech-icons-track {

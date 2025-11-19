@@ -9,5 +9,3 @@ erl_crash.dump
 /config/*.secret.exs
 .elixir_ls/
 .vscode
-node_modules/
-convert-to-oklch.js

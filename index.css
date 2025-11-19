@@ -1,28 +1,57 @@
 :root {
-  --bg-color: #ffffff;
-  --text-color: #333333;
-  --heading-border-color: #eaecef;
-  --link-color: #0366d6;
-  --skill-bg-color: #f1f8ff;
-  --skill-border-color: #c8e1ff;
-  --code-bg-color: rgba(27, 31, 35, 0.05);
-  --logo: url("/logo-black.svg");
+  /* Brand colors */
+  --logo-accent: oklch(0.5135 0.1192 277.9155); /* #585EAA */
+
+  /* Light theme colors */
+  --light-bg-color: oklch(1 0 none); /* #ffffff */
+  --light-text-color: oklch(0.3211 0 none); /* #333333 */
+  --light-heading-border-color: oklch(0.9424 0.0046 258.3251); /* #eaecef */
+  --light-link-color: var(--logo-accent);
+  --light-skill-bg-color: oklch(0.9759 0.0120 247.9494); /* #f1f8ff */
+  --light-skill-border-color: oklch(0.9009 0.0492 253.0755); /* #c8e1ff */
+  --light-code-bg-color: oklch(0.159 0.009 256.85 / 0.05); /* rgba(27, 31, 35, 0.05) */
+  --light-logo: url("/logo-black.svg");
+  --light-logo-base: oklch(0.2054 0.0067 0.7687); /* #1A1617 */
+
+  /* Dark theme colors */
+  --dark-bg-color: oklch(0.2178 0 none); /* #1a1a1a */
+  --dark-text-color: oklch(0.9067 0 none); /* #e0e0e0 */
+  --dark-heading-border-color: oklch(0.4091 0 none); /* #4a4a4a */
+  --dark-link-color: oklch(0.75 0.12 278); /* Lighter logo-accent for dark mode */
+  --dark-skill-bg-color: oklch(0.3291 0.0157 248.3029); /* #2f363d */
+  --dark-skill-border-color: oklch(0.4156 0.0190 248.2843); /* #444d56 */
+  --dark-code-bg-color: oklch(0.968 0.007 254.63 / 0.05); /* rgba(240, 246, 252, 0.05) */
+  --dark-logo: url("/logo-white.svg");
+  --dark-logo-base: oklch(1 0 none); /* #ffffff */
+
+  /* Default to light theme */
+  --bg-color: var(--light-bg-color);
+  --text-color: var(--light-text-color);
+  --heading-border-color: var(--light-heading-border-color);
+  --link-color: var(--light-link-color);
+  --skill-bg-color: var(--light-skill-bg-color);
+  --skill-border-color: var(--light-skill-border-color);
+  --code-bg-color: var(--light-code-bg-color);
+  --logo: var(--light-logo);
+  --logo-base: var(--light-logo-base);
 }
 
 html {
   scroll-behavior: smooth;
 }
 
+/* System preference: dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg-color: #1a1a1a;
-    --text-color: #e0e0e0;
-    --heading-border-color: #4a4a4a;
-    --link-color: #58a6ff;
-    --skill-bg-color: #2f363d;
-    --skill-border-color: #444d56;
-    --code-bg-color: rgba(240, 246, 252, 0.05);
-    --logo: url("/logo-white.svg");
+    --bg-color: var(--dark-bg-color);
+    --text-color: var(--dark-text-color);
+    --heading-border-color: var(--dark-heading-border-color);
+    --link-color: var(--dark-link-color);
+    --skill-bg-color: var(--dark-skill-bg-color);
+    --skill-border-color: var(--dark-skill-border-color);
+    --code-bg-color: var(--dark-code-bg-color);
+    --logo: var(--dark-logo);
+    --logo-base: var(--dark-logo-base);
   }
 }
 
@@ -245,19 +274,6 @@ ul.tags li {
   padding-top: 20px;
 }
 
-#mode-toggle {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 10px;
-  background-color: var(--skill-bg-color);
-  border: 1px solid var(--skill-border-color);
-  border-radius: 5px;
-  color: var(--text-color);
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
 @media (max-width: 600px) {
   body {
     padding: 10px;
@@ -293,13 +309,6 @@ ul.tags li {
   .scroll-to-top svg {
     width: 18px;
     height: 18px;
-  }
-
-  #mode-toggle {
-    top: 10px;
-    right: 10px;
-    padding: 5px;
-    font-size: 0.8em;
   }
 }
 

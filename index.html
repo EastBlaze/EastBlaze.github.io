@@ -28,6 +28,11 @@
       <a href="#tech">기술</a>
       <a href="#projects">프로젝트</a>
       <a href="#contact">연락처</a>
+      <button id="scroll-to-top" class="scroll-to-top" aria-label="맨 위로">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+      </button>
     </nav>
 
     <main>
@@ -163,5 +168,35 @@
         </div>
       </div>
     </div>
+
+    <script>
+      // Scroll to top button visibility based on logo visibility
+      const logo = document.querySelector('.logo');
+      const scrollToTopBtn = document.getElementById('scroll-to-top');
+
+      // Intersection Observer to detect when logo is out of view
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            scrollToTopBtn.classList.remove('visible');
+          } else {
+            scrollToTopBtn.classList.add('visible');
+          }
+        });
+      }, {
+        threshold: 0,
+        rootMargin: '0px'
+      });
+
+      observer.observe(logo);
+
+      // Scroll to top functionality
+      scrollToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    </script>
   </body>
 </html>

@@ -142,6 +142,8 @@ nav {
   display: flex;
   gap: 1.5em;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
   padding: 1.2em 1em;
   margin: 0 -20px 1.5em;
   border-bottom: 1px solid var(--heading-border-color);
@@ -165,6 +167,41 @@ nav a:hover {
   opacity: 1;
   text-decoration: none;
   color: var(--link-color);
+}
+
+.scroll-to-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  margin-left: auto;
+  background-color: var(--skill-bg-color);
+  border: 1px solid var(--skill-border-color);
+  border-radius: 50%;
+  color: var(--text-color);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.8);
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
+}
+
+.scroll-to-top:hover {
+  background-color: var(--link-color);
+  color: #ffffff;
+  transform: scale(0.9);
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+.scroll-to-top svg {
+  display: block;
 }
 
 .logo {
@@ -242,6 +279,16 @@ ul.tags li {
 
   nav a {
     font-size: 0.95em;
+  }
+
+  .scroll-to-top {
+    width: 32px;
+    height: 32px;
+  }
+
+  .scroll-to-top svg {
+    width: 18px;
+    height: 18px;
   }
 
   #mode-toggle {

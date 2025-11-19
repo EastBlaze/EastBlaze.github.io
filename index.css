@@ -88,6 +88,7 @@ code {
 
 section {
   margin-bottom: 2.5em;
+  scroll-margin-top: 5em;
 }
 
 section > p {
@@ -131,6 +132,10 @@ li > dl dt {
 
 header {
   margin-bottom: 1em;
+}
+
+footer {
+  scroll-margin-top: 5em;
 }
 
 nav {

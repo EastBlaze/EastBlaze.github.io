@@ -9,6 +9,10 @@
   --logo: url("/logo-black.svg");
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --bg-color: #1a1a1a;
@@ -88,6 +92,7 @@ code {
 
 section {
   margin-bottom: 2.5em;
+  scroll-margin-top: 5em;
 }
 
 section > p {
@@ -133,25 +138,74 @@ header {
   margin-bottom: 1em;
 }
 
+footer {
+  scroll-margin-top: 5em;
+}
+
 nav {
   display: flex;
-  gap: 1em;
+  gap: 1.5em;
   flex-wrap: wrap;
-  padding: 1em 0;
-  margin-bottom: 1.5em;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2em 1em;
+  margin: 0 -20px 1.5em;
   border-bottom: 1px solid var(--heading-border-color);
+  position: sticky;
+  top: 0;
+  background-color: var(--bg-color);
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 nav a {
-  font-size: 0.9em;
-  font-weight: 500;
-  opacity: 0.8;
-  transition: opacity 0.2s ease;
+  font-size: 1em;
+  font-weight: 600;
+  opacity: 0.85;
+  transition: opacity 0.2s ease, color 0.2s ease;
+  letter-spacing: 0.01em;
 }
 
 nav a:hover {
   opacity: 1;
   text-decoration: none;
+  color: var(--link-color);
+}
+
+.scroll-to-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  margin-left: auto;
+  background-color: var(--skill-bg-color);
+  border: 1px solid var(--skill-border-color);
+  border-radius: 50%;
+  color: var(--text-color);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.8);
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
+}
+
+.scroll-to-top:hover {
+  background-color: var(--link-color);
+  color: #ffffff;
+  transform: scale(0.9);
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+.scroll-to-top svg {
+  display: block;
 }
 
 .logo {
@@ -221,6 +275,26 @@ ul.tags li {
     font-size: 1.1em;
   }
 
+  nav {
+    margin: 0 -10px 1.5em;
+    padding: 1em 0.75em;
+    gap: 1.2em;
+  }
+
+  nav a {
+    font-size: 0.95em;
+  }
+
+  .scroll-to-top {
+    width: 32px;
+    height: 32px;
+  }
+
+  .scroll-to-top svg {
+    width: 18px;
+    height: 18px;
+  }
+
   #mode-toggle {
     top: 10px;
     right: 10px;
@@ -261,32 +335,13 @@ ul.tags li {
   width: 100%;
   overflow: hidden;
   position: relative;
-}
-
-.tech-icons-scroll::before,
-.tech-icons-scroll::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100px;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.tech-icons-scroll::before {
-  left: -1px;
-  background: linear-gradient(to right, var(--bg-color), transparent);
-}
-
-.tech-icons-scroll::after {
-  right: -1px;
-  background: linear-gradient(to left, var(--bg-color), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 50px, black calc(100% - 50px), transparent);
+  mask-image: linear-gradient(to right, transparent, black 50px, black calc(100% - 50px), transparent);
 }
 
 .tech-icons-track {
   display: flex;
-  gap: 0;
+  gap: 8px;
   width: fit-content;
   animation: scroll-left 30s linear infinite;
 }

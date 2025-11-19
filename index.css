@@ -9,6 +9,10 @@
   --logo: url("/logo-black.svg");
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --bg-color: #1a1a1a;

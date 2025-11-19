@@ -313,8 +313,24 @@ ul.tags li {
 .mode-toggle:hover {
   transform: scale(1.1);
   background-color: var(--link-color);
-  color: #ffffff;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.mode-toggle:hover img {
+  filter: brightness(0) invert(1);
+}
+
+.mode-toggle:focus {
+  outline: none;
+}
+
+.mode-toggle:focus-visible {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+}
+
+.mode-toggle:active {
+  transform: scale(1.05);
 }
 
 .mode-toggle img {

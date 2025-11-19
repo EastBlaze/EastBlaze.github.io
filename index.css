@@ -360,7 +360,7 @@ ul.tags li {
 
 .tech-icons-track {
   display: flex;
-  gap: 0;
+  gap: 8px;
   width: fit-content;
   animation: scroll-left 30s linear infinite;
 }

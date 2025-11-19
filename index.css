@@ -275,12 +275,12 @@ ul.tags li {
 }
 
 .tech-icons-scroll::before {
-  left: 0;
+  left: -1px;
   background: linear-gradient(to right, var(--bg-color), transparent);
 }
 
 .tech-icons-scroll::after {
-  right: 0;
+  right: -1px;
   background: linear-gradient(to left, var(--bg-color), transparent);
 }
 

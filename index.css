@@ -241,19 +241,46 @@ ul.tags li {
 }
 
 .tech-icons-all {
-  text-align: center;
   margin: 2em 0;
   padding: 2em 0 1em;
   border-top: 1px solid var(--heading-border-color);
   opacity: 0.6;
   transition: opacity 0.3s ease;
+  overflow: hidden;
 }
 
 .tech-icons-all:hover {
   opacity: 1;
 }
 
-.tech-icons-all img {
-  max-width: 100%;
-  height: auto;
+.tech-icons-all:hover .tech-icons-track {
+  animation-play-state: paused;
+}
+
+.tech-icons-scroll {
+  width: 100%;
+  overflow: hidden;
+}
+
+.tech-icons-track {
+  display: flex;
+  gap: 0;
+  width: fit-content;
+  animation: scroll-left 30s linear infinite;
+}
+
+.tech-icons-track img {
+  height: 48px;
+  width: auto;
+  display: block;
+  flex-shrink: 0;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }

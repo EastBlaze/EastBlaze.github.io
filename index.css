@@ -1,28 +1,28 @@
 :root {
   /* Brand colors */
-  --logo-accent: oklch(0.5134971394319381 0.11917775239565245 277.91552249839833); /* #585EAA */
+  --logo-accent: oklch(0.5135 0.1192 277.9155); /* #585EAA */
 
   /* Light theme colors */
-  --light-bg-color: oklch(1.0000000000000002 0 none); /* #ffffff */
-  --light-text-color: oklch(0.3210925111636326 0 none); /* #333333 */
-  --light-heading-border-color: oklch(0.942413803619848 0.004573743437741055 258.3251297184272); /* #eaecef */
-  --light-link-color: oklch(0.5299158244468323 0.1895904026718105 257.41015524058787); /* #0366d6 */
-  --light-skill-bg-color: oklch(0.9758800471347102 0.011970530789997656 247.94937044196612); /* #f1f8ff */
-  --light-skill-border-color: oklch(0.9009280061155005 0.04921301144396766 253.07549034802355); /* #c8e1ff */
+  --light-bg-color: oklch(1 0 none); /* #ffffff */
+  --light-text-color: oklch(0.3211 0 none); /* #333333 */
+  --light-heading-border-color: oklch(0.9424 0.0046 258.3251); /* #eaecef */
+  --light-link-color: oklch(0.5299 0.1896 257.4102); /* #0366d6 */
+  --light-skill-bg-color: oklch(0.9759 0.0120 247.9494); /* #f1f8ff */
+  --light-skill-border-color: oklch(0.9009 0.0492 253.0755); /* #c8e1ff */
   --light-code-bg-color: oklch(0.159 0.009 256.85 / 0.05); /* rgba(27, 31, 35, 0.05) */
   --light-logo: url("/logo-black.svg");
-  --light-logo-base: oklch(0.2053565455589128 0.0066828708829180595 0.7686506762928532); /* #1A1617 */
+  --light-logo-base: oklch(0.2054 0.0067 0.7687); /* #1A1617 */
 
   /* Dark theme colors */
-  --dark-bg-color: oklch(0.217786502463702 0 none); /* #1a1a1a */
-  --dark-text-color: oklch(0.9067006916295425 0 none); /* #e0e0e0 */
-  --dark-heading-border-color: oklch(0.4091200040105989 0 none); /* #4a4a4a */
-  --dark-link-color: oklch(0.7152519436317379 0.15181002580889427 253.30612849675236); /* #58a6ff */
-  --dark-skill-bg-color: oklch(0.3290960118796363 0.015679453251968293 248.30294912147323); /* #2f363d */
-  --dark-skill-border-color: oklch(0.41560527684382026 0.01902015307762857 248.28428789815416); /* #444d56 */
+  --dark-bg-color: oklch(0.2178 0 none); /* #1a1a1a */
+  --dark-text-color: oklch(0.9067 0 none); /* #e0e0e0 */
+  --dark-heading-border-color: oklch(0.4091 0 none); /* #4a4a4a */
+  --dark-link-color: oklch(0.7153 0.1518 253.3061); /* #58a6ff */
+  --dark-skill-bg-color: oklch(0.3291 0.0157 248.3029); /* #2f363d */
+  --dark-skill-border-color: oklch(0.4156 0.0190 248.2843); /* #444d56 */
   --dark-code-bg-color: oklch(0.968 0.007 254.63 / 0.05); /* rgba(240, 246, 252, 0.05) */
   --dark-logo: url("/logo-white.svg");
-  --dark-logo-base: oklch(1.0000000000000002 0 none); /* #ffffff */
+  --dark-logo-base: oklch(1 0 none); /* #ffffff */
 
   /* Default to light theme */
   --bg-color: var(--light-bg-color);

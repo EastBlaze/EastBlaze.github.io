@@ -316,8 +316,8 @@ ul.tags li {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
-.mode-toggle:hover img {
-  filter: brightness(0) invert(1);
+.mode-toggle:hover svg {
+  color: #ffffff;
 }
 
 .mode-toggle:focus {
@@ -333,7 +333,7 @@ ul.tags li {
   transform: scale(1.05);
 }
 
-.mode-toggle img {
+.mode-toggle svg {
   display: none;
   width: 24px;
   height: 24px;
@@ -396,7 +396,7 @@ body.dark .mode-toggle .moon-icon {
     height: 48px;
   }
 
-  .mode-toggle img {
+  .mode-toggle svg {
     width: 20px;
     height: 20px;
   }

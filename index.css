@@ -343,7 +343,7 @@ ul.tags li {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 100px;
+  width: 50px;
   z-index: 1;
   pointer-events: none;
 }

@@ -260,6 +260,28 @@ ul.tags li {
 .tech-icons-scroll {
   width: 100%;
   overflow: hidden;
+  position: relative;
+}
+
+.tech-icons-scroll::before,
+.tech-icons-scroll::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.tech-icons-scroll::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg-color), transparent);
+}
+
+.tech-icons-scroll::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg-color), transparent);
 }
 
 .tech-icons-track {

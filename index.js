@@ -140,7 +140,7 @@
     const id = state.previewProjectId || state.selectedProjectId;
     const project = state.projects.find((p) => p.id === id);
     const activeIcons = new Set((project?.technologies || []).map((name) => ICONS[name]).filter(Boolean));
-    const preview = Boolean(state.previewProjectId);
+    const preview = Boolean(state.previewProjectId) && state.previewProjectId !== state.selectedProjectId;
     all(".ambient-icon").forEach((icon) => {
       const relevant = activeIcons.has(icon.dataset.techIcon);
       icon.classList.toggle("is-preview", relevant && preview);
@@ -167,6 +167,10 @@
     const project = result.project;
     const card = element("article", "project-card" + (result.score > 0 ? " featured" : ""));
     card.dataset.projectId = project.id;
+    card.addEventListener("click", (event) => {
+      if (event.target.closest("button, details, a")) return;
+      toggleProject(project.id);
+    });
     card.addEventListener("mouseenter", () => { state.previewProjectId = project.id; updateHighlights(); });
     card.addEventListener("mouseleave", () => { state.previewProjectId = null; updateHighlights(); });
     const top = element("div", "project-topline");

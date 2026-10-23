@@ -40,7 +40,8 @@
             "video"
           ]
         }
-      ]
+      ],
+      "technologies": []
     },
     {
       "id": "pig-management",
@@ -87,6 +88,9 @@
             "backend"
           ]
         }
+      ],
+      "technologies": [
+        "AWS"
       ]
     },
     {
@@ -125,6 +129,11 @@
             "data"
           ]
         }
+      ],
+      "technologies": [
+        "Vue.js",
+        "Quasar",
+        "D3.js"
       ]
     },
     {
@@ -163,6 +172,11 @@
             "cloud"
           ]
         }
+      ],
+      "technologies": [
+        "Flutter",
+        "Firebase",
+        "Google Cloud"
       ]
     },
     {
@@ -202,6 +216,11 @@
             "ai"
           ]
         }
+      ],
+      "technologies": [
+        "Node.js",
+        "Python",
+        "ZMQ"
       ]
     }
   ]

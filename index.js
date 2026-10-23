@@ -42,7 +42,21 @@
     ai: ["ai", "vision", "nlp"], operations: ["operations", "cloud", "performance", "cost"],
     mobile: ["mobile", "flutter", "ios", "android"]
   };
-  const state = { focus: "all", needs: [], projects: [] };
+  const state = { focus: "all", needs: [], projects: [], selectedProjectId: null, previewProjectId: null };
+  // Only technologies verified in the public resume are connected to project cards.
+  const ICONS = {
+    "JavaScript": "js", "Vue.js": "vue", "D3.js": "d3",
+    "Node.js": "nodejs", "Elixir": "elixir", "Ruby on Rails": "rails",
+    "PostgreSQL": "postgresql", "Google Cloud": "gcp",
+    "AWS": "aws", "Flutter": "flutter", "Firebase": "firebase",
+    "Python": "py"
+  };
+  const AMBIENT_ROWS = [
+    ["js", "vue", "d3", "nodejs", "elixir", "rails", "postgresql", "gcp", "aws", "flutter", "firebase", "py"],
+    ["aws", "python", "firebase", "flutter", "gcp", "postgresql", "rails", "elixir", "nodejs", "d3", "vue", "js"],
+    ["d3", "js", "aws", "vue", "firebase", "py", "nodejs", "gcp", "flutter", "postgresql", "elixir", "rails"]
+  ].map((row) => row.map((icon) => icon === "python" ? "py" : icon));
+
   const $ = (selector) => document.querySelector(selector);
   const all = (selector) => Array.from(document.querySelectorAll(selector));
 
@@ -95,9 +109,66 @@
     return el;
   }
 
+  function renderAmbient() {
+    const root = $("#ambient-stack");
+    if (!root) return;
+    const fragment = document.createDocumentFragment();
+    for (const row of AMBIENT_ROWS) {
+      const lane = element("div", "ambient-lane");
+      for (let repeat = 0; repeat < 2; repeat++) {
+        const sequence = element("div", "ambient-sequence");
+        for (const icon of row) {
+          const img = element("img", "ambient-icon");
+          img.dataset.techIcon = icon;
+          img.src = "https://skillicons.dev/icons?i=" + encodeURIComponent(icon);
+          img.alt = "";
+          img.loading = "lazy";
+          img.decoding = "async";
+          img.width = 66;
+          img.height = 66;
+          sequence.append(img);
+        }
+        lane.append(sequence);
+      }
+      fragment.append(lane);
+    }
+    root.replaceChildren(fragment);
+    updateHighlights();
+  }
+
+  function updateHighlights() {
+    const id = state.previewProjectId || state.selectedProjectId;
+    const project = state.projects.find((p) => p.id === id);
+    const activeIcons = new Set((project?.technologies || []).map((name) => ICONS[name]).filter(Boolean));
+    const preview = Boolean(state.previewProjectId);
+    all(".ambient-icon").forEach((icon) => {
+      const relevant = activeIcons.has(icon.dataset.techIcon);
+      icon.classList.toggle("is-preview", relevant && preview);
+      icon.classList.toggle("is-active", relevant && !preview);
+    });
+    all(".project-card").forEach((card) => {
+      card.classList.toggle("is-selected", card.dataset.projectId === state.selectedProjectId);
+      card.classList.toggle("is-preview", card.dataset.projectId === state.previewProjectId);
+      const btn = card.querySelector(".project-select");
+      if (btn) {
+        const selected = card.dataset.projectId === state.selectedProjectId;
+        btn.setAttribute("aria-pressed", String(selected));
+        btn.textContent = selected ? "선택 해제" : "선택";
+      }
+    });
+  }
+
+  function toggleProject(id) {
+    state.selectedProjectId = state.selectedProjectId === id ? null : id;
+    updateHighlights();
+  }
+
   function createCard(result, index) {
     const project = result.project;
     const card = element("article", "project-card" + (result.score > 0 ? " featured" : ""));
+    card.dataset.projectId = project.id;
+    card.addEventListener("mouseenter", () => { state.previewProjectId = project.id; updateHighlights(); });
+    card.addEventListener("mouseleave", () => { state.previewProjectId = null; updateHighlights(); });
     const top = element("div", "project-topline");
     top.append(element("span", "project-index", String(index + 1).padStart(2, "0") + " / PROJECT"));
     if (state.needs.length && result.matchedNeedKeys.length) {
@@ -105,7 +176,20 @@
     } else if (result.role) {
       top.append(element("span", "project-label", "관련"));
     }
+    const select = element("button", "project-select", "선택");
+    select.type = "button";
+    select.setAttribute("aria-label", project.title + " 기술 강조");
+    select.setAttribute("aria-pressed", "false");
+    select.addEventListener("click", () => toggleProject(project.id));
+    top.append(select);
     card.append(top, element("h3", "", project.title), element("p", "", project.subtitle));
+
+    if (project.technologies?.length) {
+      const tech = element("div", "project-tech");
+      const strong = element("strong", "", "사용 기술 ");
+      tech.append(strong, document.createTextNode(project.technologies.join(" · ")));
+      card.append(tech);
+    }
 
     const tags = element("div", "tag-list");
     project.tags.forEach((tag) => tags.append(element("span", "tag", tag)));
@@ -139,6 +223,7 @@
     const fragment = document.createDocumentFragment();
     ranked.forEach((result, index) => fragment.append(createCard(result, index)));
     list.replaceChildren(fragment);
+    updateHighlights();
 
     const count = ranked.filter((result) => result.score > 0).length;
     $("#project-summary").textContent = !state.needs.length && state.focus === "all"
@@ -241,6 +326,7 @@
       const payload = await response.json();
       if (!Array.isArray(payload.projects)) throw new Error("잘못된 데이터 형식");
       state.projects = payload.projects;
+      renderAmbient();
       render();
       showStatus(analysisText());
     } catch (error) {

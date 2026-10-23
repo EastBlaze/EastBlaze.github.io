@@ -1,0 +1,208 @@
+{
+  "version": 1,
+  "note": "현재 공개 이력서에 기재된 프로젝트만 포함합니다. 코드로 확인되지 않은 추가 기여나 비공개 저장소의 세부 내용은 포함하지 않습니다.",
+  "projects": [
+    {
+      "id": "video-scoover",
+      "title": "비디오스쿠버 영상 검색·가편집 서비스",
+      "subtitle": "영상 분석·검색·가편집을 연결하는 미디어 서비스",
+      "tags": [
+        "미디어",
+        "백엔드",
+        "AI 응용"
+      ],
+      "facets": [
+        "backend",
+        "ai",
+        "media",
+        "search"
+      ],
+      "evidence": [
+        {
+          "label": "백엔드",
+          "text": "영상 분석부터 검색 및 가편집까지 이어지는 미디어 처리 파이프라인 구축",
+          "keys": [
+            "backend",
+            "media",
+            "video",
+            "pipeline",
+            "data"
+          ]
+        },
+        {
+          "label": "AI 응용",
+          "text": "자연어 대화를 이용한 영상 검색 및 클립 구성 기능 개발",
+          "keys": [
+            "ai",
+            "nlp",
+            "search",
+            "media",
+            "video"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pig-management",
+      "title": "양돈관리 전산 시스템",
+      "subtitle": "농업 생산관리 데이터 및 운영 비용 개선",
+      "tags": [
+        "농업",
+        "백엔드",
+        "인프라"
+      ],
+      "facets": [
+        "backend",
+        "operations",
+        "data",
+        "cloud"
+      ],
+      "evidence": [
+        {
+          "label": "백엔드",
+          "text": "양돈 생산 전산 관리를 위한 데이터 구조 설계",
+          "keys": [
+            "backend",
+            "data",
+            "database"
+          ]
+        },
+        {
+          "label": "인프라",
+          "text": "AWS 사용량 분석과 트래픽 경로 개선을 통해 요금 30% 절감",
+          "keys": [
+            "operations",
+            "aws",
+            "cloud",
+            "performance",
+            "cost"
+          ]
+        },
+        {
+          "label": "데이터 처리",
+          "text": "공공데이터를 활용해 자동 정산 서비스를 위한 데이터 처리 기능 구축",
+          "keys": [
+            "data",
+            "automation",
+            "backend"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "solar-dashboard",
+      "title": "태양광 발전 모니터링 대시보드",
+      "subtitle": "에너지 데이터를 위한 대시보드와 PWA",
+      "tags": [
+        "에너지",
+        "프론트엔드",
+        "데이터 시각화"
+      ],
+      "facets": [
+        "frontend",
+        "visualization",
+        "data",
+        "pwa"
+      ],
+      "evidence": [
+        {
+          "label": "프론트엔드",
+          "text": "Vue.js 기반 Quasar 프레임워크를 이용한 PWA 개발",
+          "keys": [
+            "frontend",
+            "vue",
+            "quasar",
+            "pwa"
+          ]
+        },
+        {
+          "label": "데이터 시각화",
+          "text": "D3.js로 도메인에 맞는 차트 개발",
+          "keys": [
+            "frontend",
+            "visualization",
+            "d3",
+            "data"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "social-app",
+      "title": "이미지 중심 소셜 커뮤니티 앱",
+      "subtitle": "iOS와 Android를 지원하는 크로스플랫폼 앱",
+      "tags": [
+        "모바일",
+        "앱",
+        "백엔드"
+      ],
+      "facets": [
+        "mobile",
+        "frontend",
+        "backend",
+        "cloud"
+      ],
+      "evidence": [
+        {
+          "label": "앱 개발",
+          "text": "Flutter를 이용한 iOS·Android 크로스플랫폼 지원",
+          "keys": [
+            "mobile",
+            "flutter",
+            "ios",
+            "android",
+            "frontend"
+          ]
+        },
+        {
+          "label": "백엔드",
+          "text": "Firebase와 Google Cloud를 이용한 코어 기능 개발",
+          "keys": [
+            "backend",
+            "firebase",
+            "cloud"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "activity-measurement",
+      "title": "웹캠 설치형 아동 운동량 측정 솔루션",
+      "subtitle": "웹캠 영상 인식과 비동기 작업 처리",
+      "tags": [
+        "영상 인식",
+        "백엔드",
+        "AI 응용"
+      ],
+      "facets": [
+        "backend",
+        "ai",
+        "vision",
+        "performance"
+      ],
+      "evidence": [
+        {
+          "label": "백엔드",
+          "text": "웹앱용 Node.js 서버와 이미지 인식용 Python 딥러닝 서버 구현",
+          "keys": [
+            "backend",
+            "node",
+            "python",
+            "ai",
+            "vision"
+          ]
+        },
+        {
+          "label": "처리 구조",
+          "text": "병목이 되는 이미지 인식 작업을 처리하기 위해 ZMQ 작업 큐 적용",
+          "keys": [
+            "backend",
+            "queue",
+            "performance",
+            "ai"
+          ]
+        }
+      ]
+    }
+  ]
+}

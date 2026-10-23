@@ -101,9 +101,9 @@
     const top = element("div", "project-topline");
     top.append(element("span", "project-index", String(index + 1).padStart(2, "0") + " / PROJECT"));
     if (state.needs.length && result.matchedNeedKeys.length) {
-      top.append(element("span", "project-label", "요구사항 일치 " + result.matchedNeedKeys.length + "개"));
+      top.append(element("span", "project-label", "일치 " + result.matchedNeedKeys.length + "개"));
     } else if (result.role) {
-      top.append(element("span", "project-label", "선택 분야 관련"));
+      top.append(element("span", "project-label", "관련"));
     }
     card.append(top, element("h3", "", project.title), element("p", "", project.subtitle));
 
@@ -115,7 +115,7 @@
       (result.role ? evidencesFor(project, ROLE_KEYS[state.focus]) : []);
     if (relevant.length) {
       const reasons = element("div", "match-reasons");
-      reasons.append(element("strong", "", result.matchedEvidence.length ? "요구사항과 연결되는 구현 근거" : "선택 분야와 연결되는 구현 근거"));
+      reasons.append(element("strong", "", "관련 작업"));
       const list = element("ul");
       relevant.forEach((entry) => list.append(element("li", "", entry.text)));
       reasons.append(list);
@@ -123,7 +123,7 @@
     }
 
     const details = element("details");
-    const summary = element("summary", "", "프로젝트의 전체 구현 내용 보기");
+    const summary = element("summary", "", "자세히 보기");
     const descList = element("dl");
     project.evidence.forEach((entry) => {
       descList.append(element("dt", "", entry.label), element("dd", "", entry.text));
@@ -142,8 +142,8 @@
 
     const count = ranked.filter((result) => result.score > 0).length;
     $("#project-summary").textContent = !state.needs.length && state.focus === "all"
-      ? "기존 이력서의 프로젝트 5개를 모두 보여드립니다."
-      : "전체 " + ranked.length + "개 중 관련 경험 " + count + "개를 우선 배치했습니다. 모든 프로젝트를 계속 볼 수 있습니다.";
+      ? ranked.length + "개"
+      : "관련 " + count + "개 / 전체 " + ranked.length + "개";
 
     all("[data-focus]").forEach((button) => {
       button.setAttribute("aria-pressed", String(button.dataset.focus === state.focus));
@@ -156,17 +156,13 @@
   }
 
   function analysisText() {
-    if (!state.needs.length) {
-      return state.focus === "all"
-        ? "관심 분야를 선택하거나 채용 공고를 입력해 보세요."
-        : ROLE_LABELS[state.focus] + " 관련 경험을 위쪽에 배치했습니다.";
-    }
+    if (!state.needs.length) return "";
     const missing = state.needs.filter((key) =>
       !state.projects.some((project) => evidencesFor(project, [key]).length > 0));
     const found = state.needs.length - missing.length;
-    let message = "요구사항 " + state.needs.length + "개 항목을 추출했고, 현재 기록에서 " + found + "개 항목의 구현 근거를 찾았습니다.";
+    let message = "검색 항목 " + state.needs.length + "개 · 관련 기록 " + found + "개";
     if (missing.length) {
-      message += " 확인된 근거가 없는 항목: " + missing.map((key) => TERMS[key].label).join(", ") + ".";
+      message += " · 미기재: " + missing.map((key) => TERMS[key].label).join(", ");
     }
     return message;
   }
@@ -180,11 +176,16 @@
     window.history.replaceState(null, "", url.pathname + url.search + url.hash);
   }
 
+  function showStatus(message) {
+    $("#analysis-status").textContent = message;
+    $(".analysis-output").hidden = !message;
+  }
+
   function setFocus(focus) {
     if (!Object.prototype.hasOwnProperty.call(ROLE_LABELS, focus)) return;
     state.focus = focus;
     render();
-    $("#analysis-status").textContent = analysisText();
+    showStatus(analysisText());
     syncUrl();
   }
 
@@ -192,9 +193,9 @@
     const input = $("#job-description").value;
     state.needs = extractNeeds(input);
     render();
-    $("#analysis-status").textContent = input.trim() && !state.needs.length
-      ? "알려진 기술·업무 키워드를 찾지 못했습니다. 분야를 직접 선택하거나 기술명을 포함해 다시 입력해 주세요."
-      : analysisText();
+    showStatus(input.trim() && !state.needs.length
+      ? "일치하는 기술명을 찾지 못했습니다."
+      : analysisText());
     syncUrl();
   }
 
@@ -211,7 +212,7 @@
     url.hash = "projects";
     try {
       await navigator.clipboard.writeText(url.toString());
-      $("#analysis-status").textContent = "현재 보기 링크를 복사했습니다. 채용 공고 원문은 포함되지 않습니다.";
+      showStatus("링크를 복사했습니다.");
     } catch (error) {
       window.prompt("아래 링크를 복사해 공유하세요.", url.toString());
     }
@@ -225,7 +226,7 @@
       $("#job-description").value = "";
       state.needs = [];
       render();
-      $("#analysis-status").textContent = analysisText();
+      showStatus(analysisText());
       syncUrl();
     });
     $("#share-view").addEventListener("click", shareView);
@@ -241,10 +242,10 @@
       if (!Array.isArray(payload.projects)) throw new Error("잘못된 데이터 형식");
       state.projects = payload.projects;
       render();
-      $("#analysis-status").textContent = analysisText();
+      showStatus(analysisText());
     } catch (error) {
       $("#project-list").replaceChildren(element("p", "empty-state", "프로젝트를 불러오지 못했습니다. 페이지를 새로고침해 주세요."));
-      $("#analysis-status").textContent = "프로젝트 데이터를 읽을 수 없어 분석 기능을 사용할 수 없습니다.";
+      showStatus("프로젝트 정보를 불러오지 못했습니다.");
       $("#analyze-job").disabled = true;
     }
   }

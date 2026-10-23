@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "note": "현재 공개 이력서에 기재된 프로젝트만 포함합니다. 코드로 확인되지 않은 추가 기여나 비공개 저장소의 세부 내용은 포함하지 않습니다.",
+  "note": "공개 이력서에 기재된 프로젝트입니다.",
   "projects": [
     {
       "id": "video-scoover",
       "title": "비디오스쿠버 영상 검색·가편집 서비스",
-      "subtitle": "영상 분석·검색·가편집을 연결하는 미디어 서비스",
+      "subtitle": "영상 분석·검색·가편집 파이프라인",
       "tags": [
         "미디어",
         "백엔드",
@@ -20,7 +20,7 @@
       "evidence": [
         {
           "label": "백엔드",
-          "text": "영상 분석부터 검색 및 가편집까지 이어지는 미디어 처리 파이프라인 구축",
+          "text": "영상 분석·검색·가편집을 연결하는 처리 파이프라인 구축",
           "keys": [
             "backend",
             "media",
@@ -31,7 +31,7 @@
         },
         {
           "label": "AI 응용",
-          "text": "자연어 대화를 이용한 영상 검색 및 클립 구성 기능 개발",
+          "text": "자연어로 영상을 검색하고 클립을 구성하는 기능 개발",
           "keys": [
             "ai",
             "nlp",
@@ -45,7 +45,7 @@
     {
       "id": "pig-management",
       "title": "양돈관리 전산 시스템",
-      "subtitle": "농업 생산관리 데이터 및 운영 비용 개선",
+      "subtitle": "데이터 구조 설계, AWS 비용 30% 절감",
       "tags": [
         "농업",
         "백엔드",
@@ -80,7 +80,7 @@
         },
         {
           "label": "데이터 처리",
-          "text": "공공데이터를 활용해 자동 정산 서비스를 위한 데이터 처리 기능 구축",
+          "text": "공공데이터를 활용한 자동 정산 서비스 구축 작업",
           "keys": [
             "data",
             "automation",
@@ -92,7 +92,7 @@
     {
       "id": "solar-dashboard",
       "title": "태양광 발전 모니터링 대시보드",
-      "subtitle": "에너지 데이터를 위한 대시보드와 PWA",
+      "subtitle": "Vue.js·Quasar PWA, D3.js 차트",
       "tags": [
         "에너지",
         "프론트엔드",
@@ -107,7 +107,7 @@
       "evidence": [
         {
           "label": "프론트엔드",
-          "text": "Vue.js 기반 Quasar 프레임워크를 이용한 PWA 개발",
+          "text": "Vue.js·Quasar 기반 PWA 개발",
           "keys": [
             "frontend",
             "vue",
@@ -117,7 +117,7 @@
         },
         {
           "label": "데이터 시각화",
-          "text": "D3.js로 도메인에 맞는 차트 개발",
+          "text": "D3.js를 이용한 발전 데이터 차트 개발",
           "keys": [
             "frontend",
             "visualization",
@@ -130,7 +130,7 @@
     {
       "id": "social-app",
       "title": "이미지 중심 소셜 커뮤니티 앱",
-      "subtitle": "iOS와 Android를 지원하는 크로스플랫폼 앱",
+      "subtitle": "Flutter 모바일 앱과 Firebase 백엔드",
       "tags": [
         "모바일",
         "앱",
@@ -145,7 +145,7 @@
       "evidence": [
         {
           "label": "앱 개발",
-          "text": "Flutter를 이용한 iOS·Android 크로스플랫폼 지원",
+          "text": "Flutter로 iOS·Android 앱 개발",
           "keys": [
             "mobile",
             "flutter",
@@ -156,7 +156,7 @@
         },
         {
           "label": "백엔드",
-          "text": "Firebase와 Google Cloud를 이용한 코어 기능 개발",
+          "text": "Firebase·Google Cloud 기반 백엔드 기능 개발",
           "keys": [
             "backend",
             "firebase",
@@ -168,7 +168,7 @@
     {
       "id": "activity-measurement",
       "title": "웹캠 설치형 아동 운동량 측정 솔루션",
-      "subtitle": "웹캠 영상 인식과 비동기 작업 처리",
+      "subtitle": "Node.js·Python 서버, ZMQ 작업 큐",
       "tags": [
         "영상 인식",
         "백엔드",
@@ -183,7 +183,7 @@
       "evidence": [
         {
           "label": "백엔드",
-          "text": "웹앱용 Node.js 서버와 이미지 인식용 Python 딥러닝 서버 구현",
+          "text": "Node.js 웹 서버와 Python 이미지 인식 서버 구현",
           "keys": [
             "backend",
             "node",
@@ -194,7 +194,7 @@
         },
         {
           "label": "처리 구조",
-          "text": "병목이 되는 이미지 인식 작업을 처리하기 위해 ZMQ 작업 큐 적용",
+          "text": "이미지 인식 작업 처리를 위해 ZMQ 작업 큐 적용",
           "keys": [
             "backend",
             "queue",

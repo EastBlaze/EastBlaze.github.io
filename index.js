@@ -42,7 +42,12 @@
     ai: ["ai", "vision", "nlp"], operations: ["operations", "cloud", "performance", "cost"],
     mobile: ["mobile", "flutter", "ios", "android"]
   };
-  const state = { focus: "all", needs: [], projects: [], selectedProjectId: null, previewProjectId: null };
+  const state = { focus: "all", needs: [], projects: [], hoveredProjectId: null, focusedProjectId: null, visibleProjectId: null };
+  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+  const centerCandidates = new Set();
+  let cardObserver = null;
+  let mobileFrame = null;
+  let lastHighlightedId = undefined;
   // Only technologies verified in the public resume are connected to project cards.
   const ICONS = {
     "JavaScript": "js", "Vue.js": "vue", "D3.js": "d3",
@@ -136,30 +141,90 @@
     updateHighlights();
   }
 
+  function activeProjectId() {
+    // Pointer movement is transient; keyboard focus remains usable on all devices.
+    if (finePointer.matches && state.hoveredProjectId) return state.hoveredProjectId;
+    if (state.focusedProjectId && document.activeElement?.matches(":focus-visible")) return state.focusedProjectId;
+    return finePointer.matches ? null : state.visibleProjectId;
+  }
+
   function updateHighlights() {
-    const id = state.previewProjectId || state.selectedProjectId;
+    const id = activeProjectId();
+    if (id === lastHighlightedId) return;
+    lastHighlightedId = id;
     const project = state.projects.find((p) => p.id === id);
     const activeIcons = new Set((project?.technologies || []).map((name) => ICONS[name]).filter(Boolean));
-    const preview = Boolean(state.previewProjectId) && state.previewProjectId !== state.selectedProjectId;
     all(".ambient-icon").forEach((icon) => {
-      const relevant = activeIcons.has(icon.dataset.techIcon);
-      icon.classList.toggle("is-preview", relevant && preview);
-      icon.classList.toggle("is-active", relevant && !preview);
+      icon.classList.toggle("is-active", activeIcons.has(icon.dataset.techIcon));
     });
     all(".project-card").forEach((card) => {
-      card.classList.toggle("is-selected", card.dataset.projectId === state.selectedProjectId);
-      card.classList.toggle("is-preview", card.dataset.projectId === state.previewProjectId);
-      const btn = card.querySelector(".project-select");
-      if (btn) {
-        const selected = card.dataset.projectId === state.selectedProjectId;
-        btn.setAttribute("aria-pressed", String(selected));
-        btn.textContent = selected ? "선택 해제" : "선택";
-      }
+      card.classList.toggle("is-highlighted", card.dataset.projectId === id);
     });
   }
 
-  function toggleProject(id) {
-    state.selectedProjectId = state.selectedProjectId === id ? null : id;
+  function evaluateMobileCenter() {
+    mobileFrame = null;
+    if (finePointer.matches) return;
+    const cards = [...centerCandidates];
+    const centerY = window.innerHeight / 2;
+    const top = window.innerHeight * 0.3;
+    const bottom = window.innerHeight * 0.7;
+    let winner = null;
+    let winnerDistance = Infinity;
+    let currentDistance = Infinity;
+    for (const card of cards) {
+      const rect = card.getBoundingClientRect();
+      const visibleTop = Math.max(rect.top, top);
+      const visibleBottom = Math.min(rect.bottom, bottom);
+      if (visibleBottom <= visibleTop) continue;
+      const distance = Math.abs((visibleTop + visibleBottom) / 2 - centerY);
+      if (card.dataset.projectId === state.visibleProjectId) currentDistance = distance;
+      if (distance < winnerDistance) {
+        winner = card.dataset.projectId;
+        winnerDistance = distance;
+      }
+    }
+    // A small margin prevents rapid switching near the boundary of two cards.
+    if (state.visibleProjectId && currentDistance <= winnerDistance + 24) {
+      winner = state.visibleProjectId;
+    }
+    if (winner !== state.visibleProjectId) {
+      state.visibleProjectId = winner;
+      updateHighlights();
+    }
+  }
+
+  function scheduleMobileCenter() {
+    if (finePointer.matches || mobileFrame !== null) return;
+    mobileFrame = requestAnimationFrame(evaluateMobileCenter);
+  }
+
+  function observeProjectCards() {
+    cardObserver?.disconnect();
+    cardObserver = null;
+    centerCandidates.clear();
+    state.visibleProjectId = null;
+    state.hoveredProjectId = null;
+    lastHighlightedId = undefined;
+    if (!finePointer.matches) {
+      if ("IntersectionObserver" in window) {
+        cardObserver = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) centerCandidates.add(entry.target);
+            else centerCandidates.delete(entry.target);
+          }
+          scheduleMobileCenter();
+        }, {
+          rootMargin: "-30% 0px -30% 0px",
+          threshold: [0, 0.25, 0.5, 0.75, 1]
+        });
+        all(".project-card").forEach((card) => cardObserver.observe(card));
+      } else {
+        // Older browsers can still use geometry-only highlighting on scroll.
+        all(".project-card").forEach((card) => centerCandidates.add(card));
+      }
+      scheduleMobileCenter();
+    }
     updateHighlights();
   }
 
@@ -167,12 +232,25 @@
     const project = result.project;
     const card = element("article", "project-card" + (result.score > 0 ? " featured" : ""));
     card.dataset.projectId = project.id;
-    card.addEventListener("click", (event) => {
-      if (event.target.closest("button, details, a")) return;
-      toggleProject(project.id);
+    card.addEventListener("mouseenter", () => {
+      if (!finePointer.matches) return;
+      state.hoveredProjectId = project.id;
+      updateHighlights();
     });
-    card.addEventListener("mouseenter", () => { state.previewProjectId = project.id; updateHighlights(); });
-    card.addEventListener("mouseleave", () => { state.previewProjectId = null; updateHighlights(); });
+    card.addEventListener("mouseleave", () => {
+      if (state.hoveredProjectId !== project.id) return;
+      state.hoveredProjectId = null;
+      updateHighlights();
+    });
+    card.addEventListener("focusin", () => {
+      state.focusedProjectId = project.id;
+      updateHighlights();
+    });
+    card.addEventListener("focusout", (event) => {
+      if (card.contains(event.relatedTarget)) return;
+      if (state.focusedProjectId === project.id) state.focusedProjectId = null;
+      updateHighlights();
+    });
     const top = element("div", "project-topline");
     top.append(element("span", "project-index", String(index + 1).padStart(2, "0") + " / PROJECT"));
     if (state.needs.length && result.matchedNeedKeys.length) {
@@ -180,12 +258,6 @@
     } else if (result.role) {
       top.append(element("span", "project-label", "관련"));
     }
-    const select = element("button", "project-select", "선택");
-    select.type = "button";
-    select.setAttribute("aria-label", project.title + " 기술 강조");
-    select.setAttribute("aria-pressed", "false");
-    select.addEventListener("click", () => toggleProject(project.id));
-    top.append(select);
     card.append(top, element("h3", "", project.title), element("p", "", project.subtitle));
 
     if (project.technologies?.length) {
@@ -227,7 +299,7 @@
     const fragment = document.createDocumentFragment();
     ranked.forEach((result, index) => fragment.append(createCard(result, index)));
     list.replaceChildren(fragment);
-    updateHighlights();
+    observeProjectCards();
 
     const count = ranked.filter((result) => result.score > 0).length;
     $("#project-summary").textContent = !state.needs.length && state.focus === "all"
@@ -320,8 +392,15 @@
     });
     $("#share-view").addEventListener("click", shareView);
     $("#scroll-to-top").addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
-    const onScroll = () => $("#scroll-to-top").classList.toggle("visible", window.scrollY > 400);
+    const onScroll = () => {
+      $("#scroll-to-top").classList.toggle("visible", window.scrollY > 400);
+      scheduleMobileCenter();
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", scheduleMobileCenter, { passive: true });
+    const onPointerChange = () => observeProjectCards();
+    if (finePointer.addEventListener) finePointer.addEventListener("change", onPointerChange);
+    else finePointer.addListener(onPointerChange);
     onScroll();
 
     try {

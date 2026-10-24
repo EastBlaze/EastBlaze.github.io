@@ -185,7 +185,7 @@
       }
     }
     // A small margin prevents rapid switching near the boundary of two cards.
-    if (state.visibleProjectId && currentDistance <= winnerDistance + 24) {
+    if (state.visibleProjectId && Number.isFinite(currentDistance) && currentDistance <= winnerDistance + 24) {
       winner = state.visibleProjectId;
     }
     if (winner !== state.visibleProjectId) {

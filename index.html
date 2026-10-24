@@ -1,234 +1,131 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EastBlaze soft.</title>
-    <link
-      rel="stylesheet"
-      as="style"
-      crossorigin
-      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
-    />
-    <link rel="stylesheet" as="style" href="/index.css" />
-  </head>
-
-  <body>
-    <div class="logo"></div>
-    <header>
-      <h1>
-        이 동 엽
-        <em>- Web Developer</em>
-      </h1>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="이동엽의 개발 경력과 프로젝트. 미디어, 농업, 에너지 등 여러 분야에서 진행한 웹 개발 작업을 정리했습니다." />
+  <meta name="theme-color" content="#585eaa" />
+  <title>이동엽 | Full-stack Web Developer</title>
+  <link rel="stylesheet" href="./index.css" />
+  <script src="./index.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <div id="ambient-stack" class="ambient-stack" aria-hidden="true"></div>
+    <header class="site-header">
+      <a class="logo" href="#intro" aria-label="EastBlaze - 처음으로"></a>
+      <nav aria-label="주요 메뉴">
+        <a href="#explore">분야별 보기</a>
+        <a href="#projects">프로젝트</a>
+        <a href="#skills">역량</a>
+        <a href="#tech">기술</a>
+        <a href="#contact">연락처</a>
+      </nav>
     </header>
 
-    <nav>
-      <a href="#intro">소개</a>
-      <a href="#skills">역량</a>
-      <a href="#tech">기술</a>
-      <a href="#projects">프로젝트</a>
-      <a href="#contact">연락처</a>
-      <button id="scroll-to-top" class="scroll-to-top" aria-label="맨 위로">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="18 15 12 9 6 15"></polyline>
-        </svg>
-      </button>
-    </nav>
-
     <main>
-      <section id="intro">
-        <h2>소개말</h2>
-        <p>
-          안녕하세요. 새로운 도메인의 비즈니스 요구사항을 빠르게 파악하고
-          기술적 해결책을 제시할 수 있는 풀스택 개발자 이동엽입니다.
-          <br />
-          전시, 에너지, 농업, 미디어 등 다양한 분야에서
-          프론트엔드부터 인프라까지 end-to-end 개발 경험을 쌓아왔습니다.
-        </p>
-      </section>
-
-      <section id="skills">
-        <h2>주요 역량</h2>
-        <dl>
-          <dt>도메인 적응력</dt>
-          <dd>다양한 산업 분야의 경험으로 새로운 비즈니스 로직을 빠르게 이해</dd>
-
-          <dt>데이터 시각화</dt>
-          <dd>비즈니스 판단에 필요한 데이터를 효과적으로 전달하는 시각화 구현</dd>
-
-          <dt>풀스택 개발</dt>
-          <dd>기술 전반에 대한 지식으로 비즈니스 요구사항에 맞는 최적의 기술 선택</dd>
-
-          <dt>운영 효율화</dt>
-          <dd>시스템 분석을 통해 비효율적인 구조 및 기능 개선으로 리소스 최적화 가능</dd>
-        </dl>
-      </section>
-
-      <section id="tech">
-        <h2>주요 사용 기술</h2>
-
-        <div class="tech-icons-main">
-          <img src="https://skillicons.dev/icons?i=js,vuejs,d3,nodejs,elixir,rails,postgresql,gcp" alt="Main Tech Stack" />
+      <section id="intro" class="hero">
+        <div class="hero-copy">
+          <h1>이동엽 <span>Web Developer</span></h1>
+          <p class="lead">전시, 에너지, 농업, 미디어 분야의 웹 서비스를 개발해 왔습니다.</p>
+          <p>프론트엔드부터 백엔드, 인프라까지 작업했습니다.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#projects">프로젝트 보기</a>
+            <a class="button subtle" href="#explore">분야별 보기</a>
+          </div>
         </div>
-
-        <dl>
-          <dt>프론트엔드</dt>
-          <dd>JavaScript, Vue.js, D3.js</dd>
-
-          <dt>백엔드</dt>
-          <dd>Node.js, Elixir, Ruby on Rails</dd>
-
-          <dt>데이터베이스 & 클라우드</dt>
-          <dd>Postgres, Google Cloud</dd>
-        </dl>
+        <aside class="hero-aside" aria-label="소개 요약">
+          <p class="aside-label">주요 작업</p>
+          <div class="aside-item"><strong>영상 검색·가편집</strong><span>비디오스쿠버 처리 파이프라인</span></div>
+          <div class="aside-item"><strong>AWS 비용 30% 절감</strong><span>양돈관리 시스템</span></div>
+          <div class="aside-item"><strong>D3.js 데이터 시각화</strong><span>태양광 발전 모니터링</span></div>
+        </aside>
       </section>
 
-      <section id="projects">
-        <h2>주요 프로젝트 성과</h2>
-        <ul>
-          <li>
-            <article>
-              <h3>비디오스쿠버 영상 검색·가편집 서비스</h3>
-              <dl>
-                <dt>백엔드</dt>
-                <dd>영상 분석부터 검색 및 가편집까지 이어지는 미디어 처리 파이프라인 구축</dd>
+      <section id="explore" class="explore-section" aria-labelledby="explore-title">
+        <div class="section-heading">
+          <div><h2 id="explore-title">분야별 보기</h2></div>
+        </div>
+        <div class="explore-panel">
+          <div class="field-group">
+            <h3 id="focus-title">관심 분야</h3>
+            <div class="focus-options" role="group" aria-labelledby="focus-title">
+              <button class="focus-chip" type="button" data-focus="all" aria-pressed="true">전체</button>
+              <button class="focus-chip" type="button" data-focus="backend" aria-pressed="false">백엔드</button>
+              <button class="focus-chip" type="button" data-focus="frontend" aria-pressed="false">프론트엔드·시각화</button>
+              <button class="focus-chip" type="button" data-focus="ai" aria-pressed="false">AI 응용</button>
+              <button class="focus-chip" type="button" data-focus="operations" aria-pressed="false">인프라·최적화</button>
+              <button class="focus-chip" type="button" data-focus="mobile" aria-pressed="false">모바일</button>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-heading" for="job-description">채용 공고로 찾기 <span>선택</span></label>
+            <textarea id="job-description" rows="3" maxlength="5000" placeholder="기술·담당 업무를 붙여넣으세요. 예: Vue.js, D3.js, AWS"></textarea>
+            <div class="form-actions">
+              <button id="analyze-job" class="button primary" type="button">프로젝트 찾기</button>
+              <button id="clear-job" class="button subtle" type="button">지우기</button>
+              <button id="share-view" class="button subtle share" type="button">링크 복사</button>
+            </div>
+            <p class="privacy-note">입력한 공고는 전송하거나 저장하지 않습니다. 공유 링크에는 검색 항목만 포함됩니다.</p>
+          </div>
+          <div class="analysis-output" aria-live="polite" aria-atomic="false" hidden>
+            <p id="analysis-status" class="analysis-status"></p>
+            <div id="requirements" class="requirements" hidden></div>
+          </div>
+        </div>
+      </section>
 
-                <dt>AI 응용</dt>
-                <dd>자연어 대화를 이용한 영상 검색 및 클립 구성 기능 개발</dd>
-              </dl>
-            </article>
-          </li>
-          <li>
-            <article>
-              <h3>양돈관리 전산 시스템</h3>
-              <dl>
-                <dt>백엔드</dt>
-                <dd>양돈 생산 전산 관리를 위한 데이터 구조 설계</dd>
+      <section id="projects" aria-labelledby="projects-title" class="projects-section">
+        <div class="section-heading projects-heading">
+          <div><h2 id="projects-title">프로젝트</h2></div>
+          <p id="project-summary">5개</p>
+        </div>
+        <div id="project-list" class="project-list" aria-live="off">
+          <p class="loading-message">프로젝트 정보를 불러오는 중입니다.</p>
+        </div>
+        <noscript>
+          <div class="no-script">
+            <p>프로젝트 목록</p>
+            <ul>
+              <li>비디오스쿠버 영상 검색·가편집 서비스 — 미디어 처리 파이프라인과 자연어 기반 영상 검색</li>
+              <li>양돈관리 전산 시스템 — 데이터 구조 설계 및 AWS 요금 30% 절감</li>
+              <li>태양광 발전 모니터링 대시보드 — Vue·Quasar PWA와 D3.js 시각화</li>
+              <li>이미지 중심 소셜 커뮤니티 앱 — Flutter 및 Firebase 기반 앱 개발</li>
+              <li>웹캠 설치형 아동 운동량 측정 솔루션 — Node.js·Python 및 ZMQ 작업 큐</li>
+            </ul>
+          </div>
+        </noscript>
+      </section>
 
-                <dt>인프라</dt>
-                <dd>AWS 사용량 분석과 트래픽 경로 개선을 통해 요금 30% 절감</dd>
+      <section id="skills" class="resume-section" aria-labelledby="skills-title">
+        <div class="section-heading"><div><h2 id="skills-title">주로 해온 일</h2></div></div>
+        <div class="skill-grid">
+          <article><h3>서비스 개발</h3><p>미디어, 농업, 에너지 분야의 웹 서비스</p></article>
+          <article><h3>데이터 시각화</h3><p>Vue.js·D3.js 대시보드와 차트</p></article>
+          <article><h3>서버·데이터 처리</h3><p>영상 처리 파이프라인과 데이터 구조 설계</p></article>
+          <article><h3>운영 개선</h3><p>AWS 사용량·트래픽 경로 개선으로 비용 30% 절감</p></article>
+        </div>
+      </section>
 
-                <dt>데이터 처리</dt>
-                <dd>공공데이터 활용으로 자동 정산 서비스를 위한 구축</dd>
-              </dl>
-            </article>
-          </li>
-          <li>
-            <article>
-              <h3>태양광 발전 모니터링 대시보드</h3>
-              <dl>
-                <dt>프론트엔드</dt>
-                <dd>Vue.js 기반 Quasar 프레임워크를 이용한 빠른 PWA 개발</dd>
-
-                <dt>데이터 시각화</dt>
-                <dd>D3.js로 도메인 맞춤화된 차트 개발</dd>
-              </dl>
-            </article>
-          </li>
-          <li>
-            <article>
-              <h3>이미지 중심 소셜 커뮤니티 앱</h3>
-              <dl>
-                <dt>앱</dt>
-                <dd>Flutter를 이용한 iOS와 Android 효율적인 크로스플랫폼 지원</dd>
-
-                <dt>백엔드</dt>
-                <dd>Firebase + Google Cloud를 이용한 빠른 코어 기능 개발</dd>
-              </dl>
-            </article>
-          </li>
-          <li>
-            <article>
-              <h3>웹캠 설치형 아동 운동량 측정 솔루션</h3>
-              <dl>
-                <dt>백엔드</dt>
-                <dd>
-                  웹앱을 위한 Node.js + 이미지 인식용 딥러닝 서버 Python 구현
-                </dd>
-
-                <dt>메시지 큐</dt>
-                <dd>
-                  병목이 되는 이미지 인식 작업을 처리하기 위한 ZMQ로 작업큐 적용
-                </dd>
-              </dl>
-            </article>
-          </li>
-        </ul>
+      <section id="tech" class="resume-section" aria-labelledby="tech-title">
+        <div class="section-heading"><div><h2 id="tech-title">사용 기술</h2></div></div>
+        <div class="tech-groups">
+          <div><h3>프론트엔드</h3><p>JavaScript · Vue.js · D3.js</p></div>
+          <div><h3>백엔드</h3><p>Node.js · Elixir · Ruby on Rails</p></div>
+          <div><h3>데이터베이스 & 클라우드</h3><p>PostgreSQL · Google Cloud</p></div>
+        </div>
       </section>
     </main>
 
     <footer id="contact">
       <h2>연락처</h2>
-      <dl>
-        <dt>Email</dt>
-        <dd>
-          <a href="mailto:eb.plumtree@gmail.com">EB.Plumtree@gmail.com</a>
-        </dd>
-
-        <dt>GitHub</dt>
-        <dd>
-          <a href="https://github.com/EB-Plum" target="_blank">EB-Plum</a>
-        </dd>
-      </dl>
-    </footer>
-
-    <div class="tech-icons-all">
-      <div class="tech-icons-scroll">
-        <div class="tech-icons-track">
-          <img src="https://skillicons.dev/icons?i=js,vuejs,d3,nodejs,elixir,rails,postgresql,gcp,ts,react,python,mongodb,aws,docker,express,nestjs,flask,redis,electron,firebase&perline=20" alt="All Tech Stack" />
-          <img src="https://skillicons.dev/icons?i=js,vuejs,d3,nodejs,elixir,rails,postgresql,gcp,ts,react,python,mongodb,aws,docker,express,nestjs,flask,redis,electron,firebase&perline=20" alt="All Tech Stack" />
-        </div>
+      <div class="footer-links">
+        <a href="mailto:eb.plumtree@gmail.com">EB.Plumtree@gmail.com</a>
+        <a href="https://github.com/EB-Plum" target="_blank" rel="noopener noreferrer">GitHub / EB-Plum ↗</a>
       </div>
-    </div>
-
-    <script>
-      // Scroll to top button visibility based on logo visibility
-      const logo = document.querySelector('.logo');
-      const scrollToTopBtn = document.getElementById('scroll-to-top');
-
-      // Intersection Observer to detect when logo is out of view
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            scrollToTopBtn.classList.remove('visible');
-          } else {
-            scrollToTopBtn.classList.add('visible');
-          }
-        });
-      }, {
-        threshold: 0,
-        rootMargin: '0px'
-      });
-
-      observer.observe(logo);
-
-      // Scroll to top functionality
-      scrollToTopBtn.addEventListener('click', () => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
-        // Replace history instead of pushing
-        history.replaceState(null, '', window.location.pathname);
-      });
-
-      // Anchor link navigation with history replace
-      document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-          e.preventDefault();
-          const targetId = this.getAttribute('href');
-          const targetElement = document.querySelector(targetId);
-
-          if (targetElement) {
-            targetElement.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start'
-            });
-            // Replace history instead of pushing
-            history.replaceState(null, '', targetId);
-          }
-        });
-      });
-    </script>
-  </body>
+      <p class="footer-note">© EastBlaze</p>
+    </footer>
+  </div>
+  <button id="scroll-to-top" class="scroll-to-top" type="button" aria-label="맨 위로 이동">↑</button>
+</body>
 </html>

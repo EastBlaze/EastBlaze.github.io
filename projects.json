@@ -1,0 +1,227 @@
+{
+  "version": 1,
+  "note": "공개 이력서에 기재된 프로젝트입니다.",
+  "projects": [
+    {
+      "id": "video-scoover",
+      "title": "비디오스쿠버 영상 검색·가편집 서비스",
+      "subtitle": "영상 분석·검색·가편집 파이프라인",
+      "tags": [
+        "미디어",
+        "백엔드",
+        "AI 응용"
+      ],
+      "facets": [
+        "backend",
+        "ai",
+        "media",
+        "search"
+      ],
+      "evidence": [
+        {
+          "label": "백엔드",
+          "text": "영상 분석·검색·가편집을 연결하는 처리 파이프라인 구축",
+          "keys": [
+            "backend",
+            "media",
+            "video",
+            "pipeline",
+            "data"
+          ]
+        },
+        {
+          "label": "AI 응용",
+          "text": "자연어로 영상을 검색하고 클립을 구성하는 기능 개발",
+          "keys": [
+            "ai",
+            "nlp",
+            "search",
+            "media",
+            "video"
+          ]
+        }
+      ],
+      "technologies": []
+    },
+    {
+      "id": "pig-management",
+      "title": "양돈관리 전산 시스템",
+      "subtitle": "데이터 구조 설계, AWS 비용 30% 절감",
+      "tags": [
+        "농업",
+        "백엔드",
+        "인프라"
+      ],
+      "facets": [
+        "backend",
+        "operations",
+        "data",
+        "cloud"
+      ],
+      "evidence": [
+        {
+          "label": "백엔드",
+          "text": "양돈 생산 전산 관리를 위한 데이터 구조 설계",
+          "keys": [
+            "backend",
+            "data",
+            "database"
+          ]
+        },
+        {
+          "label": "인프라",
+          "text": "AWS 사용량 분석과 트래픽 경로 개선을 통해 요금 30% 절감",
+          "keys": [
+            "operations",
+            "aws",
+            "cloud",
+            "performance",
+            "cost"
+          ]
+        },
+        {
+          "label": "데이터 처리",
+          "text": "공공데이터를 활용한 자동 정산 서비스 구축 작업",
+          "keys": [
+            "data",
+            "automation",
+            "backend"
+          ]
+        }
+      ],
+      "technologies": [
+        "AWS"
+      ]
+    },
+    {
+      "id": "solar-dashboard",
+      "title": "태양광 발전 모니터링 대시보드",
+      "subtitle": "Vue.js·Quasar PWA, D3.js 차트",
+      "tags": [
+        "에너지",
+        "프론트엔드",
+        "데이터 시각화"
+      ],
+      "facets": [
+        "frontend",
+        "visualization",
+        "data",
+        "pwa"
+      ],
+      "evidence": [
+        {
+          "label": "프론트엔드",
+          "text": "Vue.js·Quasar 기반 PWA 개발",
+          "keys": [
+            "frontend",
+            "vue",
+            "quasar",
+            "pwa"
+          ]
+        },
+        {
+          "label": "데이터 시각화",
+          "text": "D3.js를 이용한 발전 데이터 차트 개발",
+          "keys": [
+            "frontend",
+            "visualization",
+            "d3",
+            "data"
+          ]
+        }
+      ],
+      "technologies": [
+        "Vue.js",
+        "Quasar",
+        "D3.js"
+      ]
+    },
+    {
+      "id": "social-app",
+      "title": "이미지 중심 소셜 커뮤니티 앱",
+      "subtitle": "Flutter 모바일 앱과 Firebase 백엔드",
+      "tags": [
+        "모바일",
+        "앱",
+        "백엔드"
+      ],
+      "facets": [
+        "mobile",
+        "frontend",
+        "backend",
+        "cloud"
+      ],
+      "evidence": [
+        {
+          "label": "앱 개발",
+          "text": "Flutter로 iOS·Android 앱 개발",
+          "keys": [
+            "mobile",
+            "flutter",
+            "ios",
+            "android",
+            "frontend"
+          ]
+        },
+        {
+          "label": "백엔드",
+          "text": "Firebase·Google Cloud 기반 백엔드 기능 개발",
+          "keys": [
+            "backend",
+            "firebase",
+            "cloud"
+          ]
+        }
+      ],
+      "technologies": [
+        "Flutter",
+        "Firebase",
+        "Google Cloud"
+      ]
+    },
+    {
+      "id": "activity-measurement",
+      "title": "웹캠 설치형 아동 운동량 측정 솔루션",
+      "subtitle": "Node.js·Python 서버, ZMQ 작업 큐",
+      "tags": [
+        "영상 인식",
+        "백엔드",
+        "AI 응용"
+      ],
+      "facets": [
+        "backend",
+        "ai",
+        "vision",
+        "performance"
+      ],
+      "evidence": [
+        {
+          "label": "백엔드",
+          "text": "Node.js 웹 서버와 Python 이미지 인식 서버 구현",
+          "keys": [
+            "backend",
+            "node",
+            "python",
+            "ai",
+            "vision"
+          ]
+        },
+        {
+          "label": "처리 구조",
+          "text": "이미지 인식 작업 처리를 위해 ZMQ 작업 큐 적용",
+          "keys": [
+            "backend",
+            "queue",
+            "performance",
+            "ai"
+          ]
+        }
+      ],
+      "technologies": [
+        "Node.js",
+        "Python",
+        "ZMQ"
+      ]
+    }
+  ]
+}

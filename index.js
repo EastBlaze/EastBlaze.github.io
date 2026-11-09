@@ -5,7 +5,7 @@
     backend: { label: "백엔드", words: ["백엔드", "서버 개발", "서버", "backend", "back-end", "api", "rest api"] },
     frontend: { label: "프론트엔드", words: ["프론트엔드", "프런트엔드", "frontend", "front-end", "ui 개발", "웹 프론트"] },
     visualization: { label: "데이터 시각화", words: ["시각화", "대시보드", "그래프", "차트", "visualization", "dashboard", "chart"] },
-    ai: { label: "AI 응용", words: ["인공지능", "ai", "딥러닝", "머신러닝", "machine learning", "deep learning", "ml", "llm"] },
+    ai: { label: "AI 응용", words: ["인공지능", "ai", "딥러닝", "머신러닝", "machine learning", "deep learning", "ml"] },
     operations: { label: "인프라·운영", words: ["인프라", "devops", "sre", "운영 최적화", "운영 자동화", "infrastructure"] },
     mobile: { label: "모바일 앱", words: ["모바일", "mobile", "크로스플랫폼", "앱 개발"] },
     data: { label: "데이터 처리", words: ["데이터 처리", "데이터 파이프라인", "데이터 설계", "data processing", "data pipeline"] },
@@ -15,26 +15,30 @@
     pipeline: { label: "파이프라인", words: ["파이프라인", "pipeline"] },
     search: { label: "검색", words: ["검색", "search", "retrieval"] },
     nlp: { label: "자연어 처리", words: ["자연어", "nlp", "natural language"] },
-    vision: { label: "이미지 인식", words: ["이미지 인식", "컴퓨터 비전", "computer vision", "opencv"] },
+    vision: { label: "이미지 인식", words: ["이미지 인식", "컴퓨터 비전", "computer vision"] },
     performance: { label: "성능 개선", words: ["병목", "성능 최적화", "성능 개선", "performance", "latency", "throughput"] },
     cost: { label: "비용 최적화", words: ["비용 절감", "비용 최적화", "cost optimization", "cost reduction"] },
-    cloud: { label: "클라우드", words: ["클라우드", "cloud", "gcp", "google cloud"] },
-    aws: { label: "AWS", words: ["aws", "amazon web services"] },
-    vue: { label: "Vue.js", words: ["vue", "vue.js", "vuejs"] },
-    quasar: { label: "Quasar", words: ["quasar"] },
-    d3: { label: "D3.js", words: ["d3", "d3.js", "d3js"] },
-    pwa: { label: "PWA", words: ["pwa", "progressive web app"] },
-    flutter: { label: "Flutter", words: ["flutter"] },
-    ios: { label: "iOS", words: ["ios"] },
-    android: { label: "Android", words: ["android"] },
-    firebase: { label: "Firebase", words: ["firebase"] },
-    node: { label: "Node.js", words: ["node.js", "nodejs", "node"] },
-    python: { label: "Python", words: ["python", "파이썬"] },
-    rails: { label: "Ruby on Rails", words: ["ruby on rails", "rails"] },
-    postgresql: { label: "PostgreSQL", words: ["postgresql", "postgres"] },
-    temporal: { label: "Temporal", words: ["temporal"] },
-    ffmpeg: { label: "FFmpeg", words: ["ffmpeg"] },
-    queue: { label: "작업 큐", words: ["메시지 큐", "작업 큐", "job queue", "message queue", "zmq", "zeromq"] },
+    cloud: { label: "클라우드", words: ["클라우드", "cloud"] },
+    gcp: { label: "Google Cloud", technology: true, words: ["gcp", "google cloud"], related: ["cloud"] },
+    opencv: { label: "OpenCV", technology: true, words: ["opencv"], related: ["vision"] },
+    llm: { label: "LLM", technology: true, words: ["llm"], related: ["ai"] },
+    aws: { label: "AWS", technology: true, words: ["aws", "amazon web services"] },
+    vue: { label: "Vue.js", technology: true, words: ["vue", "vue.js", "vuejs"] },
+    quasar: { label: "Quasar", technology: true, words: ["quasar"] },
+    d3: { label: "D3.js", technology: true, words: ["d3", "d3.js", "d3js"] },
+    pwa: { label: "PWA", technology: true, words: ["pwa", "progressive web app"] },
+    flutter: { label: "Flutter", technology: true, words: ["flutter"] },
+    ios: { label: "iOS", technology: true, words: ["ios"] },
+    android: { label: "Android", technology: true, words: ["android"] },
+    firebase: { label: "Firebase", technology: true, words: ["firebase"] },
+    node: { label: "Node.js", technology: true, words: ["node.js", "nodejs", "node"] },
+    python: { label: "Python", technology: true, words: ["python", "파이썬"] },
+    rails: { label: "Ruby on Rails", technology: true, words: ["ruby on rails", "rails"] },
+    postgresql: { label: "PostgreSQL", technology: true, words: ["postgresql", "postgres"] },
+    temporal: { label: "Temporal", technology: true, words: ["temporal"] },
+    ffmpeg: { label: "FFmpeg", technology: true, words: ["ffmpeg"] },
+    zmq: { label: "ZMQ", technology: true, words: ["zmq", "zeromq"], related: ["queue"] },
+    queue: { label: "작업 큐", words: ["메시지 큐", "작업 큐", "job queue", "message queue"] },
     automation: { label: "자동화", words: ["자동화", "automation", "정산 자동화"] }
   };
   const ROLE_LABELS = {
@@ -87,11 +91,19 @@
 
   function extractNeeds(text) {
     const clean = text.trim().toLowerCase();
-    return Object.keys(TERMS).filter((key) => TERMS[key].words.some((word) => matchesWord(clean, word)));
+    const found = Object.keys(TERMS).filter((key) => TERMS[key].words.some((word) => matchesWord(clean, word)));
+    // Specific technologies already carry their related topic; do not count it twice.
+    return found.filter((key) => !found.some((other) => TERMS[other].related?.includes(key)));
   }
 
   function evidencesFor(project, keys) {
-    return project.evidence.filter((entry) => keys.some((key) => entry.keys.includes(key)));
+    return project.evidence.filter((entry) => keys.some((key) => entry.keys.includes(key) ||
+      (TERMS[key]?.technology && TERMS[key].words.some((word) => matchesWord(entry.text, word)))));
+  }
+
+  function usesTechnology(project, key) {
+    return evidencesFor(project, [key]).length > 0 || (project.technologies || []).some((name) =>
+      TERMS[key].words.some((word) => matchesWord(name, word)));
   }
 
   function roleMatch(project) {
@@ -100,14 +112,18 @@
   }
 
   function rank(project) {
-    const matchedNeedKeys = state.needs.filter((key) => evidencesFor(project, [key]).length > 0);
+    const matchedTechnologyKeys = state.needs.filter((key) => TERMS[key].technology && usesTechnology(project, key));
+    const relatedNeedKeys = state.needs.filter((key) => !matchedTechnologyKeys.includes(key) &&
+      evidencesFor(project, TERMS[key].related || [key]).length > 0);
+    const evidenceKeys = [...matchedTechnologyKeys, ...relatedNeedKeys.flatMap((key) => TERMS[key].related || [key])];
     const role = roleMatch(project);
     return {
       project,
       role,
-      matchedNeedKeys,
-      matchedEvidence: evidencesFor(project, matchedNeedKeys),
-      score: matchedNeedKeys.length * 10 + (role ? 5 : 0)
+      matchedTechnologyKeys,
+      relatedNeedKeys,
+      matchedEvidence: evidencesFor(project, evidenceKeys),
+      score: (matchedTechnologyKeys.length + relatedNeedKeys.length) * 10 + (role ? 5 : 0)
     };
   }
 
@@ -257,8 +273,11 @@
     });
     const top = element("div", "project-topline");
     top.append(element("span", "project-index", String(index + 1).padStart(2, "0") + " / PROJECT"));
-    if (state.needs.length && result.matchedNeedKeys.length) {
-      top.append(element("span", "project-label", "일치 " + result.matchedNeedKeys.length + "개"));
+    const labels = [];
+    if (result.matchedTechnologyKeys.length) labels.push("기술 일치 " + result.matchedTechnologyKeys.length + "개");
+    if (result.relatedNeedKeys.length) labels.push("분야 관련 " + result.relatedNeedKeys.length + "개");
+    if (labels.length) {
+      top.append(element("span", "project-label", labels.join(" · ")));
     } else if (result.role) {
       top.append(element("span", "project-label", "관련"));
     }
@@ -298,7 +317,8 @@
   }
 
   function render() {
-    const ranked = state.projects.map(rank).sort((a, b) => b.score - a.score);
+    const ranked = state.projects.map(rank).sort((a, b) =>
+      b.matchedTechnologyKeys.length - a.matchedTechnologyKeys.length || b.score - a.score);
     const list = $("#project-list");
     const fragment = document.createDocumentFragment();
     ranked.forEach((result, index) => fragment.append(createCard(result, index)));
@@ -322,13 +342,14 @@
 
   function analysisText() {
     if (!state.needs.length) return "";
-    const missing = state.needs.filter((key) =>
-      !state.projects.some((project) => evidencesFor(project, [key]).length > 0));
-    const found = state.needs.length - missing.length;
-    let message = "검색 항목 " + state.needs.length + "개 · 관련 기록 " + found + "개";
-    if (missing.length) {
-      message += " · 미기재: " + missing.map((key) => TERMS[key].label).join(", ");
-    }
+    const technologies = state.needs.filter((key) => TERMS[key].technology);
+    const missing = technologies.filter((key) => !state.projects.some((project) => usesTechnology(project, key)));
+    const topics = state.needs.filter((key) => !TERMS[key].technology);
+    const related = topics.filter((key) => state.projects.some((project) => evidencesFor(project, [key]).length > 0));
+    let message = "검색 항목 " + state.needs.length + "개";
+    if (technologies.length) message += " · 기술 기재 " + (technologies.length - missing.length) + "개";
+    if (topics.length) message += " · 분야 관련 " + related.length + "개";
+    if (missing.length) message += " · 미기재 기술: " + missing.map((key) => TERMS[key].label).join(", ");
     return message;
   }
 
@@ -359,7 +380,7 @@
     state.needs = extractNeeds(input);
     render();
     showStatus(input.trim() && !state.needs.length
-      ? "일치하는 기술명을 찾지 못했습니다."
+      ? "검색 항목을 찾지 못했습니다."
       : analysisText());
     syncUrl();
   }
@@ -384,6 +405,7 @@
   }
 
   async function initialize() {
+    const projectControls = all("[data-focus], #job-description, #analyze-job, #clear-job, #share-view");
     restoreUrlState();
     all("[data-focus]").forEach((button) => button.addEventListener("click", () => setFocus(button.dataset.focus)));
     $("#analyze-job").addEventListener("click", analyze);
@@ -395,9 +417,16 @@
       syncUrl();
     });
     $("#share-view").addEventListener("click", shareView);
-    $("#scroll-to-top").addEventListener("click", () => window.scrollTo({ top: 0 }));
+    const topButton = $("#scroll-to-top");
+    topButton.addEventListener("click", () => {
+      $(".logo").focus({ preventScroll: true });
+      window.scrollTo({ top: 0 });
+    });
     const onScroll = () => {
-      $("#scroll-to-top").classList.toggle("visible", window.scrollY > 400);
+      const visible = window.scrollY > 400;
+      if (!visible && document.activeElement === topButton) $(".logo").focus({ preventScroll: true });
+      topButton.disabled = !visible;
+      topButton.classList.toggle("visible", visible);
       scheduleMobileCenter();
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -416,10 +445,11 @@
       renderAmbient();
       render();
       showStatus(analysisText());
+      projectControls.forEach((control) => { control.disabled = false; });
     } catch (error) {
       $("#project-list").replaceChildren(element("p", "empty-state", "프로젝트를 불러오지 못했습니다. 페이지를 새로고침해 주세요."));
       showStatus("프로젝트 정보를 불러오지 못했습니다.");
-      $("#analyze-job").disabled = true;
+      $("#project-summary").textContent = "불러오기 실패";
     }
   }
 

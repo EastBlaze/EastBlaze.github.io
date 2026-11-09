@@ -85,7 +85,8 @@ section, footer { scroll-margin-top: 25px; }
 .focus-chip:hover { border-color: var(--accent); }
 .field-help { color: var(--muted); margin: -4px 0 12px; font-size: .86rem; }
 #job-description { width: 100%; border: 1px solid var(--line); background: var(--surface-alt); color: var(--ink); border-radius: 12px; padding: 14px; resize: vertical; min-height: 106px; line-height: 1.55; }
-#job-description::placeholder { color: var(--muted); opacity: .78; }
+#job-description::placeholder { color: var(--muted); opacity: 1; }
+.explore-panel button:disabled { cursor: not-allowed; opacity: .6; }
 .form-actions { margin-top: 12px; }
 .privacy-note { color: var(--muted); font-size: .8rem; margin: 12px 0 0; }
 .analysis-output { margin-top: 26px; padding: 18px 20px; border-radius: 12px; background: var(--accent-soft); border: 1px solid var(--line); }

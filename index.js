@@ -391,7 +391,7 @@
       syncUrl();
     });
     $("#share-view").addEventListener("click", shareView);
-    $("#scroll-to-top").addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+    $("#scroll-to-top").addEventListener("click", () => window.scrollTo({ top: 0 }));
     const onScroll = () => {
       $("#scroll-to-top").classList.toggle("visible", window.scrollY > 400);
       scheduleMobileCenter();

@@ -1,0 +1,19 @@
+name: Resume Markdown
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check-resume:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Check Markdown matches the public resume
+        run: python3 scripts/generate_resume.py --check

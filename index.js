@@ -30,6 +30,10 @@
     firebase: { label: "Firebase", words: ["firebase"] },
     node: { label: "Node.js", words: ["node.js", "nodejs", "node"] },
     python: { label: "Python", words: ["python", "파이썬"] },
+    rails: { label: "Ruby on Rails", words: ["ruby on rails", "rails"] },
+    postgresql: { label: "PostgreSQL", words: ["postgresql", "postgres"] },
+    temporal: { label: "Temporal", words: ["temporal"] },
+    ffmpeg: { label: "FFmpeg", words: ["ffmpeg"] },
     queue: { label: "작업 큐", words: ["메시지 큐", "작업 큐", "job queue", "message queue", "zmq", "zeromq"] },
     automation: { label: "자동화", words: ["자동화", "automation", "정산 자동화"] }
   };
@@ -365,7 +369,7 @@
     const focus = params.get("focus");
     if (focus && Object.prototype.hasOwnProperty.call(ROLE_LABELS, focus)) state.focus = focus;
     const received = (params.get("needs") || "").split(",");
-    state.needs = Array.from(new Set(received.filter((key) => Object.prototype.hasOwnProperty.call(TERMS, key)))).slice(0, 30);
+    state.needs = Array.from(new Set(received.filter((key) => Object.prototype.hasOwnProperty.call(TERMS, key))));
   }
 
   async function shareView() {

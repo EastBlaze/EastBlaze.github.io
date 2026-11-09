@@ -20,18 +20,31 @@
       "evidence": [
         {
           "label": "백엔드",
-          "text": "영상 분석·검색·가편집을 연결하는 처리 파이프라인 구축",
+          "text": "Ruby on Rails 기반 영상 분석·검색·가편집 파이프라인 구축",
           "keys": [
             "backend",
             "media",
             "video",
             "pipeline",
-            "data"
+            "data",
+            "rails",
+            "postgresql",
+            "ffmpeg"
+          ]
+        },
+        {
+          "label": "워크플로 오케스트레이션",
+          "text": "Temporal 기반 비동기 영상 처리 및 실패 복구 흐름 설계",
+          "keys": [
+            "backend",
+            "video",
+            "pipeline",
+            "temporal"
           ]
         },
         {
           "label": "AI 응용",
-          "text": "자연어로 영상을 검색하고 클립을 구성하는 기능 개발",
+          "text": "자연어 기반 영상 검색 및 클립 구성 기능 개발",
           "keys": [
             "ai",
             "nlp",
@@ -41,7 +54,12 @@
           ]
         }
       ],
-      "technologies": []
+      "technologies": [
+        "Ruby on Rails",
+        "PostgreSQL",
+        "Temporal",
+        "FFmpeg"
+      ]
     },
     {
       "id": "pig-management",

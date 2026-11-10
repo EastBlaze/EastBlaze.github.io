@@ -1,0 +1,10 @@
+{
+  "baseCommit": "4a1e9798d7414df244348b1af313300293702157",
+  "sourceSha256": {
+    "index.js": "f762272e0ac2799c33585249094ba125cf3b7800b26855c33ee8820d5e3e5860",
+    "index.html": "2f226e433f469e90b2bc0b0c63943e5a9f51f73cf87e52dba6855bc63b1101b4",
+    "index.css": "2bcb6afdc5607207af9feddde420958121ce705d0d28a633dd063615ae56aed9",
+    "projects.json": "f8df480fd00b84518b65b78eba17b33d6af0a1cae2bb46307bd042522619f2fa",
+    "resume.md": "73a9bcf8114958ff32dae471bcad490638ccbe8cedafc9d295c84a336b20d30d"
+  }
+}

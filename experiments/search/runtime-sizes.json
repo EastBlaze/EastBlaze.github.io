@@ -1,0 +1,18 @@
+{
+  "node_modules/@huggingface/transformers/dist/transformers.web.js": {
+    "bytes": 1777240,
+    "gzipLevel9Bytes": 298722
+  },
+  "node_modules/onnxruntime-web/dist/ort.wasm.min.mjs": {
+    "bytes": 48259,
+    "gzipLevel9Bytes": 15598
+  },
+  "node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.mjs": {
+    "bytes": 20856,
+    "gzipLevel9Bytes": 8392
+  },
+  "node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm": {
+    "bytes": 11210254,
+    "gzipLevel9Bytes": 2864351
+  }
+}

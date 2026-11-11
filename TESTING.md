@@ -4,6 +4,21 @@
 
 운영 UI의 기준은 `index.html`, `index.js`, `index.css`, `projects.json`, `scripts/generate_resume.py`다. PR #8의 검색 실험은 운영 기능이 아니며, 테스트 통과는 모델 채택·병합·공개 배포 승인과 다르다. 별도 UI 제안(B4)을 승인된 디자인으로 간주하거나 이 작업에 합치지 않는다.
 
+## 0. 현재 배포 범위: 검색 일시 제외 (2026-11-11 UTC)
+
+운영 페이지에는 **분야별 우선 보기**만 남긴다. 선택 분야의 관련 프로젝트를 위로 정렬하지만 전체 카드는 유지한다. `기본 순서`는 공개 데이터의 원래 순서를 복원한다. 검색 입력·분석 버튼·공유 버튼·검색 결과 요약은 없으며, 과거 `needs` URL 조건은 초기화·분야 변경·history 이동에서 무시하고 제거한다. `focus` 허용목록, 다른 query parameter 및 hash 보존은 유지한다.
+
+현재 순수 로직은 `project-view.js`, DOM 연결은 `index.js`, 계약 검사는 `tests/project-view.test.cjs`에 있다. 운영 소스를 변형 없이 실행하는 작은 DOM fake로 검색 요소가 없어도 초기화되고, 로딩 중/실패 시 제어가 잠기며, 반복 정렬과 URL 복원이 정상인지 확인한다. 분야 6개 순서와 동점·전체 유지·기본 순서 복원은 독립 기대값으로 확인한다. 실제 geometry/키보드 초점·화면 품질까지 DOM fake가 보증하지 않는다.
+
+```sh
+node --test tests/*.test.cjs
+node --check project-view.js
+node --check index.js
+python3 scripts/generate_resume.py --check
+```
+
+아래의 검색 입력·기술 일치·공유·분석/지우기 계약은 **검색을 다시 구현할 때의 기준**이며 현재 기능이나 통과한 검사가 아니다. 분야 정렬/URL/초기화 부분은 위 suite가 최신 근거다. PR8 기록은 `experiments/search/historical/pr8/`로 보존했으며 기존 수치·해시는 바꾸지 않았다. 실험 suite는 보존된 입력과 과거 측정의 무결성을 검증하고 현재 운영 UI나 새 추론을 검증하지 않는다. 새 측정/과거 재현의 분리 절차는 [실험 README](experiments/search/README.md)를 따른다.
+
 ## 1. 가치 있는 테스트의 작성 기준
 
 테스트마다 다음 질문에 답한다.

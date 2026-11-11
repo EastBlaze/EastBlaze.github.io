@@ -1,0 +1,130 @@
+{
+  "experiments/search/.gitignore": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "100edad8c034f81365ca57f80e8567d702a445d61562491652567e9ece861b39"
+  },
+  "experiments/search/README.md": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "7203604058cd1d27944a02673efa563e314c2c6d48d7d70d24d7d901b3a1c589"
+  },
+  "experiments/search/baseline.mjs": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "48aa0032781a7c9e83cfa6d301cf88a9617e2d3b06889b6ea35aca70cddc3b60"
+  },
+  "experiments/search/benchmark.js": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "f4818bd43ac85e0d8d7d982df5bdde4ac0c8bbcdbf13af2a2d31b0c92a65976c"
+  },
+  "experiments/search/cases.json": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "a3d80044747a670c3c414b724e90ac467fd230f2c8ba03ab4ae09e478e6b7cb8"
+  },
+  "experiments/search/core.mjs": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "808c57f942a789eee4a7177c0e6865759fd9444f9b609bb436952951028e566b"
+  },
+  "experiments/search/download-models.py": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "6088586a5321846a60c5b412005666a956abfa60554b30a72c78cc903832974d"
+  },
+  "experiments/search/encoders.mjs": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "5d924490b96b78ea8f7bd04bcb95552cd041f87ab3c0fa83e2918bb4df540013"
+  },
+  "experiments/search/evidence.mjs": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "8f11514e8a300b13cf86e67d717a052b527aa9491e42d9a912a3151efece2cdb"
+  },
+  "experiments/search/index.html": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "905ab848c28e8a13ccb9d20db1afa91ceb08b8540e77ebad5cb409cae68e0b34"
+  },
+  "experiments/search/model-manifest.json": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "b907c0d8c56115de1960190fbcff74b18ef4f7b5062ef5c7ce456d00bac54be2"
+  },
+  "experiments/search/package-lock.json": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "4b24ed00c1fc8ab9105534d1ba42e25776cf93bf5b3f3191153989af9d318022"
+  },
+  "experiments/search/package.json": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "5f4a8de8f6d3c6abd233a3e189032dcecbcc8580c88f30f7263eb086f76964ba"
+  },
+  "experiments/search/provenance.json": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "ed7556bdae3f23c89cff609824a0206ee642c24ea458582d8d31c5143abbeab2"
+  },
+  "experiments/search/results-node.json": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "711853617089d246e68fa99c1d481eaedcfb7b21a4d5bb3e9dc3cbb9ae0a4e24"
+  },
+  "experiments/search/review.md": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "d3b741ed31be3dd1ae286fec6939463003088b9915dd58927892eba6fee2183e"
+  },
+  "experiments/search/run-node.mjs": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "f9d309083d100892985c53c179fa009dd8dcc627f6cdee0dbcdfe6835c0e986a"
+  },
+  "experiments/search/run.mjs": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "e80dff46e41e4a8656c925732ea79113e28764129275218e3bb5401ad7f68788"
+  },
+  "experiments/search/runtime-sizes.json": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "60f54b90f040afa0622f7238ba50b23622bf71fa37dc954f7d6e7a4d9f8f72ae"
+  },
+  "experiments/search/server.mjs": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "36aaf46f868e56b162f1d3c8abeb6c1271348c9d9a19cf3c54030a09ca47d743"
+  },
+  "experiments/search/summarize.py": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "0e77000b8b24d80715fbf9998f9a39b22f2b4593b29156f84276fa0476aa35ce"
+  },
+  "experiments/search/summary.json": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "0245c7b4efad62add3b21b01a82081aa1e4cd2f6109cf61083d7abd9f27e32ff"
+  },
+  "experiments/search/test_summary.py": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "0c25d519c97bfb273ba2e4567a2b8b2a069a923e0931f8625650674dcd9acfd4"
+  },
+  "experiments/search/tests.mjs": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "f68ad42d2c36bc8624caea3f396859886ccda823f0639b88a020edc8c9bdbdb3"
+  },
+  "experiments/search/tokenizer-boundaries.mjs": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "21f55e52c68f110286bd28e04d881d66ae7aa3213e59c3fe7b7e2641d2976e08"
+  },
+  "experiments/search/tokenizer-parity.json": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "e2e3e8cac93b706931b7cd58b7a3f123ba17d697ce785675266455f04f642884"
+  },
+  "experiments/search/verify-tokenizers.py": {
+    "commit": "c56f61d681e758d54c025d56772cc5cf89e53551",
+    "sha256": "be597d7b2996b7601a71652831cc96a2035cd1b2c244e1c5d1b9acbca6882477"
+  },
+  "index.js": {
+    "commit": "4a1e9798d7414df244348b1af313300293702157",
+    "sha256": "f762272e0ac2799c33585249094ba125cf3b7800b26855c33ee8820d5e3e5860"
+  },
+  "index.html": {
+    "commit": "4a1e9798d7414df244348b1af313300293702157",
+    "sha256": "2f226e433f469e90b2bc0b0c63943e5a9f51f73cf87e52dba6855bc63b1101b4"
+  },
+  "index.css": {
+    "commit": "4a1e9798d7414df244348b1af313300293702157",
+    "sha256": "2bcb6afdc5607207af9feddde420958121ce705d0d28a633dd063615ae56aed9"
+  },
+  "projects.json": {
+    "commit": "4a1e9798d7414df244348b1af313300293702157",
+    "sha256": "f8df480fd00b84518b65b78eba17b33d6af0a1cae2bb46307bd042522619f2fa"
+  },
+  "resume.md": {
+    "commit": "4a1e9798d7414df244348b1af313300293702157",
+    "sha256": "73a9bcf8114958ff32dae471bcad490638ccbe8cedafc9d295c84a336b20d30d"
+  }
+}

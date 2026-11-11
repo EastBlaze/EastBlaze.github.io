@@ -37,7 +37,7 @@ const results = await runBenchmark({
 results.inputSha256 = inputSha256;
 results.verifiedModelSha256 = reader.verifiedModelSha256;
 results.recordedAt = new Date().toISOString();
-const destination = resolve(root, process.env.RESULTS_FILE || 'results-node.json');
+const destination = resolve(root, process.env.RESULTS_FILE || 'results-fresh.json');
 await writeFile(destination, JSON.stringify(results, null, 2) + '\n');
 console.log(JSON.stringify(Object.fromEntries(Object.entries(results.models).map(([name, { documents, ...model }]) => [name, model])), null, 2));
 if (!results.complete) process.exitCode = 1;

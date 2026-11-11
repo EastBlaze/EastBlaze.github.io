@@ -8,6 +8,7 @@
   <title>이동엽 | Full-stack Web Developer</title>
   <link rel="stylesheet" href="./index.css" />
   <link rel="alternate" type="text/markdown" href="./resume.md" title="이력서 Markdown" />
+  <script src="./project-view.js" defer></script>
   <script src="./index.js" defer></script>
   <noscript>
     <style>
@@ -21,7 +22,7 @@
     <header class="site-header">
       <a class="logo" href="#intro" aria-label="EastBlaze - 처음으로"></a>
       <nav aria-label="주요 메뉴">
-        <a href="#explore">분야별 보기</a>
+        <a href="#explore">분야별 우선 보기</a>
         <a href="#projects">프로젝트</a>
         <a href="#skills">역량</a>
         <a href="#tech">기술</a>
@@ -38,7 +39,7 @@
           <p>프론트엔드부터 백엔드, 인프라까지 작업했습니다.</p>
           <div class="hero-actions">
             <a class="button primary" href="#projects">프로젝트 보기</a>
-            <a class="button subtle" href="#explore">분야별 보기</a>
+            <a class="button subtle" href="#explore">분야별 우선 보기</a>
           </div>
         </div>
         <aside class="hero-aside" aria-label="소개 요약">
@@ -50,35 +51,16 @@
       </section>
 
       <section id="explore" class="explore-section" aria-labelledby="explore-title">
-        <div class="section-heading">
-          <div><h2 id="explore-title">분야별 보기</h2></div>
-        </div>
         <div class="explore-panel">
-          <div class="field-group">
-            <h3 id="focus-title">관심 분야</h3>
-            <div class="focus-options" role="group" aria-labelledby="focus-title">
-              <button class="focus-chip" type="button" data-focus="all" aria-pressed="true" disabled>전체</button>
-              <button class="focus-chip" type="button" data-focus="backend" aria-pressed="false" disabled>백엔드</button>
-              <button class="focus-chip" type="button" data-focus="frontend" aria-pressed="false" disabled>프론트엔드·시각화</button>
-              <button class="focus-chip" type="button" data-focus="ai" aria-pressed="false" disabled>AI 응용</button>
-              <button class="focus-chip" type="button" data-focus="operations" aria-pressed="false" disabled>인프라·최적화</button>
-              <button class="focus-chip" type="button" data-focus="mobile" aria-pressed="false" disabled>모바일</button>
-            </div>
-          </div>
-          <div class="field-group">
-            <label class="field-heading" for="job-description">채용 공고로 찾기 <span>선택</span></label>
-            <p class="field-help" id="search-help">기술 일치는 명시된 사용 기술, 분야 관련은 연관된 작업을 뜻합니다.</p>
-            <textarea id="job-description" aria-describedby="search-help" rows="3" maxlength="5000" placeholder="기술·담당 업무를 붙여넣으세요. 예: Vue.js, D3.js, AWS" disabled></textarea>
-            <div class="form-actions">
-              <button id="analyze-job" class="button primary" type="button" disabled>프로젝트 찾기</button>
-              <button id="clear-job" class="button subtle" type="button" disabled>지우기</button>
-              <button id="share-view" class="button subtle share" type="button" disabled>링크 복사</button>
-            </div>
-            <p class="privacy-note">입력한 공고는 전송하거나 저장하지 않습니다. 공유 링크에는 검색 항목만 포함됩니다.</p>
-          </div>
-          <div class="analysis-output" aria-live="polite" aria-atomic="false" hidden>
-            <p id="analysis-status" class="analysis-status"></p>
-            <div id="requirements" class="requirements" hidden></div>
+          <h2 id="explore-title">분야별 우선 보기</h2>
+          <p id="focus-help" class="field-help">관련 프로젝트를 위로 정렬합니다. 모든 프로젝트는 계속 표시됩니다.</p>
+          <div class="focus-options" role="group" aria-labelledby="explore-title" aria-describedby="focus-help">
+            <button class="focus-chip" type="button" data-focus="all" aria-pressed="true" disabled>기본 순서</button>
+            <button class="focus-chip" type="button" data-focus="backend" aria-pressed="false" disabled>백엔드</button>
+            <button class="focus-chip" type="button" data-focus="frontend" aria-pressed="false" disabled>프론트엔드·시각화</button>
+            <button class="focus-chip" type="button" data-focus="ai" aria-pressed="false" disabled>AI 응용</button>
+            <button class="focus-chip" type="button" data-focus="operations" aria-pressed="false" disabled>인프라·최적화</button>
+            <button class="focus-chip" type="button" data-focus="mobile" aria-pressed="false" disabled>모바일</button>
           </div>
         </div>
       </section>
@@ -86,7 +68,6 @@
       <section id="projects" aria-labelledby="projects-title" class="projects-section">
         <div class="section-heading projects-heading">
           <div><h2 id="projects-title">프로젝트</h2></div>
-          <p id="project-summary">5개</p>
         </div>
         <div id="project-list" class="project-list" aria-live="off">
           <p class="loading-message">프로젝트 정보를 불러오는 중입니다.</p>

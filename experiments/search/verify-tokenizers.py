@@ -12,7 +12,7 @@ from tokenizers import Tokenizer
 
 ROOT = Path(__file__).resolve().parent
 models = Path(os.environ.get('MODELS_DIR', ROOT / 'models')).resolve()
-result_file = Path(os.environ.get('RESULTS_FILE', ROOT / 'results-node.json'))
+result_file = Path(os.environ.get('RESULTS_FILE', ROOT / 'results-fresh.json'))
 result_bytes = result_file.read_bytes()
 r = json.loads(result_bytes)
 if r.get('complete') is not True:
@@ -76,5 +76,5 @@ for case in r['cases']:
         errors.append(abs(float(vector @ docs[item['id']]) - item['score']))
 report['staticScores'] = {'comparisons': len(errors), 'maximumAbsoluteError': max(errors)}
 assert max(errors) < 1e-10
-(ROOT / 'tokenizer-parity.json').write_text(json.dumps(report, indent=2) + '\n')
+(ROOT / 'tokenizer-parity-fresh.json').write_text(json.dumps(report, indent=2) + '\n')
 print(json.dumps(report, indent=2))

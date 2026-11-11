@@ -48,7 +48,7 @@ def summarize(r):
 
 
 def main():
-    result_file = Path(os.environ.get('RESULTS_FILE', ROOT / 'results-node.json'))
+    result_file = Path(os.environ.get('RESULTS_FILE', ROOT / 'results-fresh.json'))
     raw = result_file.read_bytes()
     result = json.loads(raw)
     for route, expected in result['inputSha256'].items():
@@ -59,7 +59,7 @@ def main():
     summary = summarize(result)
     summary['resultSha256'] = hashlib.sha256(raw).hexdigest()
     summary['summarizerSha256'] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
-    (ROOT / 'summary.json').write_text(json.dumps(summary, indent=2) + '\n')
+    (ROOT / 'summary-fresh.json').write_text(json.dumps(summary, indent=2) + '\n')
     print(json.dumps(summary, indent=2))
 
 

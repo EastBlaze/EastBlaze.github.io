@@ -22,3 +22,7 @@ jobs:
         run: node --test tests/*.test.cjs
       - name: Check production syntax
         run: node --check project-view.js && node --check index.js
+      - name: Verify release asset hashes and cache isolation
+        run: |
+          python3 scripts/build_assets.py --check
+          python3 -m unittest discover -s tests -p test_assets.py

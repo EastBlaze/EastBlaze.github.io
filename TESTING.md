@@ -153,3 +153,18 @@ MacMini의 Node 버전이 CI Node 24와 다르면 양쪽 결과를 구분한다.
 - 첫 실행은 Node 22/23 통과였다. 경로 안전성 테스트가 macOS의 `/var` → `/private/var` alias 때문에 정상 파일의 원래 문자열과 canonical path를 다르게 비교했다. 기대값을 `realpath`로 바꿨으며 traversal·symlink 거부 assertion은 그대로 유지했다. 운영 서버 동작은 바꾸지 않았다.
 - 보정 후 Node 23/23, Python metric 6/6, 생성 Markdown 일치, 운영 JS 및 실험 JS/Python 구문 검사가 통과했다. 모델/의존성 설치 없이 저장된 증거를 확인했다.
 - 이번 작업에서 새 모델 추론, 독립 tokenizer/수치 재실행, 실제 브라우저·모바일·성능 검증, 공개 배포는 수행하지 않았다. 위 과거 독립 대조 수치를 MacMini에서 새로 측정한 결과로 읽으면 안 된다.
+
+## Static release cache regression (2026-11-11 UTC)
+
+The first search-pause deployment changed HTML and `index.js` at stable URLs.
+A returning user's cached pre-pause JS could execute against new HTML and fail
+at old line 411 (`#analyze-job` no longer exists), before loading project data.
+Local smoke and fresh HTTP byte checks did not cover this mixed-release case.
+
+Production now references content-hashed JS/CSS filenames. `build_assets.py --check`
+and `tests/test_assets.py` enforce the HTML/source/served-byte relationship. A
+cache fixture preserves previous-release bytes while changing all current source
+files, and requires the new HTML to request different matching resource URLs.
+The test failed on the original deployment links, then passed after generation.
+Existing hashed assets are retained for older HTML. Run both asset checks in CI
+and confirm project cards on the actual production URL after each release.

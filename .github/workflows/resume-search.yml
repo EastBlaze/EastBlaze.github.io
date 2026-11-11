@@ -1,0 +1,38 @@
+name: Resume Search Experiment
+
+on:
+  pull_request:
+    paths:
+      - 'experiments/search/**'
+      - 'index.js'
+      - 'projects.json'
+      - '.github/workflows/resume-search.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'experiments/search/**'
+      - 'index.js'
+      - 'projects.json'
+      - '.github/workflows/resume-search.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Test experiment logic and recorded evidence
+        run: node --test experiments/search/tests.mjs
+      - name: Test metrics
+        run: python3 -m unittest discover -s experiments/search -p test_summary.py
+      - name: Check syntax
+        run: |
+          for file in experiments/search/*.mjs experiments/search/*.js; do node --check "$file"; done
+          python3 -m py_compile experiments/search/*.py

@@ -1,0 +1,49 @@
+{
+  "resultSha256": "711853617089d246e68fa99c1d481eaedcfb7b21a4d5bb3e9dc3cbb9ae0a4e24",
+  "verifierSha256": "be597d7b2996b7601a71652831cc96a2035cd1b2c244e1c5d1b9acbca6882477",
+  "boundaryToolSha256": "21f55e52c68f110286bd28e04d881d66ae7aa3213e59c3fe7b7e2641d2976e08",
+  "static64": {
+    "cases": 30,
+    "exactIdMatches": 30,
+    "mismatches": [],
+    "passages": {
+      "cases": 5,
+      "exactIdMatches": 5,
+      "mismatches": []
+    },
+    "oracleProbes": {
+      "cases": 2,
+      "exactIdMatches": 2,
+      "mismatches": []
+    },
+    "boundaries": {
+      "cases": 8,
+      "exactIdMatches": 8,
+      "mismatches": []
+    }
+  },
+  "e5tiny": {
+    "cases": 30,
+    "exactIdMatches": 30,
+    "mismatches": [],
+    "passages": {
+      "cases": 5,
+      "exactIdMatches": 5,
+      "mismatches": []
+    },
+    "oracleProbes": {
+      "cases": 2,
+      "exactIdMatches": 2,
+      "mismatches": []
+    },
+    "boundaries": {
+      "cases": 8,
+      "exactIdMatches": 8,
+      "mismatches": []
+    }
+  },
+  "staticScores": {
+    "comparisons": 150,
+    "maximumAbsoluteError": 3.3306690738754696e-16
+  }
+}

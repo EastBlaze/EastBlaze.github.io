@@ -19,3 +19,10 @@ Do not edit `resume.md` directly. The **Resume Markdown** CI check detects drift
 Python's standard library is sufficient; the site itself needs no runtime build
 or JavaScript to serve this file. `.nojekyll` keeps GitHub Pages from converting
 Markdown to HTML.
+
+## Testing approach
+
+See [TESTING.md](TESTING.md) for the production UI and isolated search experiment
+contracts, code-first checks, MacMini testbed, remaining browser checks, and
+independent retrieval-quality gates. A passing experiment is not approval to
+change the public resume or deploy semantic search.

@@ -1,0 +1,240 @@
+{
+  "execution": "Node.js WASM fallback, NOT browser",
+  "methodology": {
+    "corpus": "Five public resume projects; not the full resume or an independent retrieval corpus",
+    "queries": "Source-derived synthetic diagnostics; development set, not a held-out benchmark",
+    "labelsUsedByRankers": false,
+    "requirementsOnly": "Oracle probe using fixture suffix; excluded from primary retrieval metrics",
+    "abstentionImplemented": false,
+    "latency": "Three sequential trials per case; discard first; one process/session, not independent samples"
+  },
+  "models": {
+    "static64": {
+      "loadMs": 56.88858400000001,
+      "documentEncodeMs": 4.811841000000015,
+      "dimensions": 64
+    },
+    "e5tiny": {
+      "loadMs": 680.7720360000001,
+      "documentEncodeMs": 533.670388,
+      "inputs": [
+        "input_ids",
+        "attention_mask",
+        "token_type_ids"
+      ],
+      "outputs": [
+        "last_hidden_state"
+      ],
+      "dimensions": 384
+    }
+  },
+  "groups": {
+    "lexical": {
+      "explicit": {
+        "n": 10,
+        "hitAt1": 9,
+        "hitAt3": 9,
+        "mrr": 0.9
+      },
+      "paraphrase": {
+        "n": 10,
+        "hitAt1": 1,
+        "hitAt3": 1,
+        "mrr": 0.1
+      },
+      "job-like": {
+        "n": 2,
+        "hitAt1": 2,
+        "hitAt3": 2,
+        "mrr": 1.0
+      },
+      "long": {
+        "n": 2,
+        "hitAt1": 2,
+        "hitAt3": 2,
+        "mrr": 1.0
+      }
+    },
+    "static64": {
+      "explicit": {
+        "n": 10,
+        "hitAt1": 10,
+        "hitAt3": 10,
+        "mrr": 1.0
+      },
+      "paraphrase": {
+        "n": 10,
+        "hitAt1": 2,
+        "hitAt3": 6,
+        "mrr": 0.4683333333333334
+      },
+      "job-like": {
+        "n": 2,
+        "hitAt1": 2,
+        "hitAt3": 2,
+        "mrr": 1.0
+      },
+      "long": {
+        "n": 2,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "mrr": 0.225
+      }
+    },
+    "e5tiny": {
+      "explicit": {
+        "n": 10,
+        "hitAt1": 10,
+        "hitAt3": 10,
+        "mrr": 1.0
+      },
+      "paraphrase": {
+        "n": 10,
+        "hitAt1": 10,
+        "hitAt3": 10,
+        "mrr": 1.0
+      },
+      "job-like": {
+        "n": 2,
+        "hitAt1": 2,
+        "hitAt3": 2,
+        "mrr": 1.0
+      },
+      "long": {
+        "n": 2,
+        "hitAt1": 1,
+        "hitAt3": 1,
+        "mrr": 0.625
+      }
+    }
+  },
+  "latency": {
+    "static64": {
+      "sampleCount": 44,
+      "medianMs": 0.04124699999999848,
+      "p95Ms": 0.13952000000000453,
+      "note": "44 correlated timings, 22 fixed queries in one session; no browser/mobile or cold-start claim"
+    },
+    "e5tiny": {
+      "sampleCount": 44,
+      "medianMs": 21.870307000000025,
+      "p95Ms": 61.450938999999835,
+      "note": "44 correlated timings, 22 fixed queries in one session; no browser/mobile or cold-start claim"
+    }
+  },
+  "guardrails": [
+    {
+      "id": "negative-irrelevant",
+      "relevant": [],
+      "lexicalNegatedRequirementsStillDetected": [],
+      "semanticAbstention": "Not implemented; ranking alone does not establish a relevant match",
+      "semanticTop": {
+        "static64": {
+          "id": "video-scoover",
+          "score": 0.3044440786432568
+        },
+        "e5tiny": {
+          "id": "video-scoover",
+          "score": 0.27319707303146196
+        }
+      },
+      "note": "Should not imply relevant experience merely because cosine returns a winner."
+    },
+    {
+      "id": "negative-unknown-tech",
+      "relevant": [],
+      "lexicalNegatedRequirementsStillDetected": [],
+      "semanticAbstention": "Not implemented; ranking alone does not establish a relevant match",
+      "semanticTop": {
+        "static64": {
+          "id": "video-scoover",
+          "score": 0.4021802421599119
+        },
+        "e5tiny": {
+          "id": "activity-measurement",
+          "score": 0.4099274679449925
+        }
+      },
+      "note": "None of these technologies is verified in the five cards. Do not label a semantic neighbor as a technology match."
+    },
+    {
+      "id": "negative-negated-aws",
+      "relevant": [
+        "social-app"
+      ],
+      "lexicalNegatedRequirementsStillDetected": [
+        "aws"
+      ],
+      "semanticAbstention": "Not implemented; ranking alone does not establish a relevant match",
+      "semanticTop": {
+        "static64": {
+          "id": "social-app",
+          "score": 0.5025105814701737
+        },
+        "e5tiny": {
+          "id": "social-app",
+          "score": 0.5531672619375535
+        }
+      },
+      "note": "AWS must not be treated as a positive requirement."
+    },
+    {
+      "id": "negative-negated-frontend",
+      "relevant": [
+        "activity-measurement"
+      ],
+      "lexicalNegatedRequirementsStillDetected": [
+        "vue",
+        "d3"
+      ],
+      "semanticAbstention": "Not implemented; ranking alone does not establish a relevant match",
+      "semanticTop": {
+        "static64": {
+          "id": "solar-dashboard",
+          "score": 0.4149285660428166
+        },
+        "e5tiny": {
+          "id": "activity-measurement",
+          "score": 0.4849280616076105
+        }
+      },
+      "note": null
+    },
+    {
+      "id": "negative-empty",
+      "relevant": [],
+      "lexicalNegatedRequirementsStillDetected": [],
+      "semanticAbstention": "Not implemented; ranking alone does not establish a relevant match",
+      "semanticTop": {
+        "static64": {
+          "id": "video-scoover",
+          "score": 0
+        },
+        "e5tiny": {
+          "id": "activity-measurement",
+          "score": 0.23849414733971938
+        }
+      },
+      "note": "No inference or relevance claim should be made for blank input."
+    },
+    {
+      "id": "negative-random",
+      "relevant": [],
+      "lexicalNegatedRequirementsStillDetected": [],
+      "semanticAbstention": "Not implemented; ranking alone does not establish a relevant match",
+      "semanticTop": {
+        "static64": {
+          "id": "activity-measurement",
+          "score": 0.2031994257582377
+        },
+        "e5tiny": {
+          "id": "activity-measurement",
+          "score": 0.31202773394840244
+        }
+      },
+      "note": "Out-of-domain query requires abstention."
+    }
+  ],
+  "resultSha256": "711853617089d246e68fa99c1d481eaedcfb7b21a4d5bb3e9dc3cbb9ae0a4e24",
+  "summarizerSha256": "0e77000b8b24d80715fbf9998f9a39b22f2b4593b29156f84276fa0476aa35ce"
+}

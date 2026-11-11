@@ -2,7 +2,7 @@
 
 이 문서는 현재 정적 이력서 UI와 `experiments/search`의 격리된 검색 실험에 적용한다. 테스트의 목적은 실행 횟수나 커버리지 숫자를 늘리는 것이 아니라 **공개 경력의 정확성, 입력의 비공개 처리, 탐색의 신뢰성**을 지키는 것이다.
 
-운영 UI의 기준은 `index.html`, `index.js`, `index.css`, `projects.json`, `scripts/generate_resume.py`다. PR #8의 검색 실험은 운영 기능이 아니며, 테스트 통과는 모델 채택·병합·공개 배포 승인과 다르다. 별도 UI 제안(B4)을 승인된 디자인으로 간주하거나 이 작업에 합치지 않는다.
+운영 UI의 기준은 `index.html`, `index.js`, `index.css`, `projects.json`, `scripts/generate_resume.py`다. PR #8의 검색 실험은 운영 기능이 아니며, 테스트 통과는 모델 채택·병합·공개 배포 승인과 다르다. 검색 실험 자체의 통과를 별도 UI 제안(B4)의 승인으로 간주하지 않는다. 이후 사용자의 이력서 디자인 main 반영 요청은 아래 B4 통합 검증에서 별도로 다룬다.
 
 ## 0. 현재 배포 범위: 검색 일시 제외 (2026-11-11 UTC)
 
@@ -168,3 +168,34 @@ files, and requires the new HTML to request different matching resource URLs.
 The test failed on the original deployment links, then passed after generation.
 Existing hashed assets are retained for older HTML. Run both asset checks in CI
 and confirm project cards on the actual production URL after each release.
+
+## B4 blueprint integration (2026-11-11 UTC)
+
+The presentation is ported onto main `797edc058f0a334dff0aa4aa7eb8fb342d7b3df5`,
+not copied over the search-pause and cache fixes. Current field ordering and
+retired-needs cleanup remain unchanged. The B4 source's old search UI and runtime
+are not imported. Original project facts and experiments are byte-preserved.
+
+The source CSS consolidates the mockup's accumulated layers. `ui-controls.js`
+contains theme and tooltip behavior and participates in release asset hashes.
+Old hashed releases stay available. The Markdown generator now includes the
+work-led heading and the original introduction moved to the skills section.
+
+Code contracts verify all six field orders, repeated selection, legacy URLs,
+loading and failures. Added presentation contracts verify every evidence text,
+the canonical project index, focusable card names, and four cycles per rail.
+The final browser smoke additionally checks desktop/mobile light/dark in
+Chromium and WebKit, 320px/tablet/landscape overflow, no-JS fallback, failed data,
+keyboard focus, tooltip Escape, theme switching, and continuous motion beyond
+five seconds. Browser viewport emulation is not physical-device or screen-reader
+certification. Screenshot review is separate from automated assertions.
+
+Final local evidence: 8 UI contracts, 24 archived-experiment contracts, 6 Python
+metric checks and 4 cache tests pass on MacMini (Node v26.0.0, Python 3.9.6).
+All eight browser combinations pass; 320px/tablet/landscape and no-JS checks pass.
+Actual screenshot inspection found a light-theme mobile anchor-offset specificity
+bug, fixed before final rerun. Identity is now asserted below the sticky header.
+Chromium axe reports no confirmed violations. Automatic contrast review remains
+incomplete for one desktop project-index link and one mobile project-tech block;
+that is not reported as a complete accessibility certification. The explicit
+neutral colors retain B4's text contrast on opaque surfaces.

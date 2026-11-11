@@ -6,13 +6,14 @@
   <meta name="description" content="이동엽의 개발 경력과 프로젝트. 미디어, 농업, 에너지 등 여러 분야에서 진행한 웹 개발 작업을 정리했습니다." />
   <meta name="theme-color" content="#585eaa" />
   <title>이동엽 | Full-stack Web Developer</title>
-  <link rel="stylesheet" href="./index.96d057a6cce00152.css" />
+  <link rel="stylesheet" href="./index.b093fc892208c683.css" />
   <link rel="alternate" type="text/markdown" href="./resume.md" title="이력서 Markdown" />
   <script src="./project-view.b69767b74a7ba47b.js" defer></script>
-  <script src="./index.b9040f01132ff4cf.js" defer></script>
+  <script src="./index.8e7e127a3b90f823.js" defer></script>
+  <script src="./ui-controls.d42d5af55a263b59.js" defer></script>
   <noscript>
     <style>
-      #explore, a[href="#explore"], #project-list, #scroll-to-top { display: none !important; }
+      #explore, a[href="#explore"], #project-list, #scroll-to-top, .theme-toggle { display: none !important; }
     </style>
   </noscript>
 </head>
@@ -21,13 +22,17 @@
     <div id="ambient-stack" class="ambient-stack" aria-hidden="true"></div>
     <header class="site-header">
       <a class="logo" href="#intro" aria-label="EastBlaze - 처음으로"></a>
-      <nav aria-label="주요 메뉴">
-        <a href="#explore">분야별 우선 보기</a>
+      <div class="utility-bar" role="group" aria-label="보조 기능">
+        <a class="md-link utility-control" href="./resume.md" type="text/markdown" aria-label="resume.md · Markdown 이력서 열기 · For AI" title="Markdown 이력서 파일 열기 (.md)" data-tip="Markdown 이력서 파일 열기 (.md)"><span class="control-mark"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 3H5v18h14V8Z"/><path d="M14 3v5h5M8 12h8M8 16h6"/></svg><span><span class="md-stem">resume</span>.md</span></span></a>
+        <button class="theme-toggle utility-control" type="button" aria-label="다크 모드로 전환" data-tip="다크 모드로 전환" disabled><span class="control-mark"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.2 14.1A8.6 8.6 0 0 1 9.9 3.8a8.6 8.6 0 1 0 10.3 10.3Z"/></svg></span></button>
+        <span id="theme-state" class="sr-only"></span>
+      </div>
+      <nav class="primary-nav" aria-label="주요 메뉴">
+        <a href="#explore">분야별 보기</a>
         <a href="#projects">프로젝트</a>
         <a href="#skills">역량</a>
         <a href="#tech">기술</a>
         <a href="#contact">연락처</a>
-        <a href="./resume.md" type="text/markdown">For AI · Markdown 이력서</a>
       </nav>
     </header>
 
@@ -35,39 +40,31 @@
       <section id="intro" class="hero">
         <div class="hero-copy">
           <h1>이동엽 <span>Web Developer</span></h1>
-          <p class="lead">전시, 에너지, 농업, 미디어 분야의 웹 서비스를 개발해 왔습니다.</p>
-          <p>프론트엔드부터 백엔드, 인프라까지 작업했습니다.</p>
-          <div class="hero-actions">
-            <a class="button primary" href="#projects">프로젝트 보기</a>
-            <a class="button subtle" href="#explore">분야별 우선 보기</a>
-          </div>
+          <h2 class="hero-statement">영상 처리부터 운영 개선까지.</h2>
+          <p class="hero-proof">전시, 에너지, 농업, 미디어 분야의 웹 서비스를 개발했습니다.</p>
         </div>
-        <aside class="hero-aside" aria-label="소개 요약">
-          <p class="aside-label">주요 작업</p>
-          <div class="aside-item"><strong>영상 검색·가편집</strong><span>비디오스쿠버 처리 파이프라인</span></div>
-          <div class="aside-item"><strong>AWS 비용 30% 절감</strong><span>양돈관리 시스템</span></div>
-          <div class="aside-item"><strong>D3.js 데이터 시각화</strong><span>태양광 발전 모니터링</span></div>
-        </aside>
       </section>
 
       <section id="explore" class="explore-section" aria-labelledby="explore-title">
-        <div class="explore-panel">
-          <h2 id="explore-title">분야별 우선 보기</h2>
-          <p id="focus-help" class="field-help">관련 프로젝트를 위로 정렬합니다. 모든 프로젝트는 계속 표시됩니다.</p>
-          <div class="focus-options" role="group" aria-labelledby="explore-title" aria-describedby="focus-help">
-            <button class="focus-chip" type="button" data-focus="all" aria-pressed="true" disabled>기본 순서</button>
-            <button class="focus-chip" type="button" data-focus="backend" aria-pressed="false" disabled>백엔드</button>
-            <button class="focus-chip" type="button" data-focus="frontend" aria-pressed="false" disabled>프론트엔드·시각화</button>
-            <button class="focus-chip" type="button" data-focus="ai" aria-pressed="false" disabled>AI 응용</button>
-            <button class="focus-chip" type="button" data-focus="operations" aria-pressed="false" disabled>인프라·최적화</button>
-            <button class="focus-chip" type="button" data-focus="mobile" aria-pressed="false" disabled>모바일</button>
+        <details class="explore-toggle">
+          <summary><h2 id="explore-title">분야별 우선 보기</h2></summary>
+          <div class="explore-panel">
+            <p id="focus-help" class="field-help">관련 프로젝트를 위로 정렬합니다. 모든 프로젝트는 계속 표시됩니다.</p>
+            <div class="focus-options" role="group" aria-labelledby="explore-title" aria-describedby="focus-help">
+              <button class="focus-chip" type="button" data-focus="all" aria-pressed="true" disabled>기본 순서</button>
+              <button class="focus-chip" type="button" data-focus="backend" aria-pressed="false" disabled>백엔드</button>
+              <button class="focus-chip" type="button" data-focus="frontend" aria-pressed="false" disabled>프론트엔드·시각화</button>
+              <button class="focus-chip" type="button" data-focus="ai" aria-pressed="false" disabled>AI 응용</button>
+              <button class="focus-chip" type="button" data-focus="operations" aria-pressed="false" disabled>인프라·최적화</button>
+              <button class="focus-chip" type="button" data-focus="mobile" aria-pressed="false" disabled>모바일</button>
+            </div>
           </div>
-        </div>
+        </details>
       </section>
 
       <section id="projects" aria-labelledby="projects-title" class="projects-section">
         <div class="section-heading projects-heading">
-          <div><h2 id="projects-title">프로젝트</h2></div>
+          <div><h2 id="projects-title">프로젝트</h2><p class="project-context">개발한 서비스와 구현한 기능</p></div>
         </div>
         <div id="project-list" class="project-list" aria-live="off">
           <p class="loading-message">프로젝트 정보를 불러오는 중입니다.</p>
@@ -88,6 +85,10 @@
 
       <section id="skills" class="resume-section" aria-labelledby="skills-title">
         <div class="section-heading"><div><h2 id="skills-title">주로 해온 일</h2></div></div>
+        <div class="scope-copy">
+          <p>전시, 에너지, 농업, 미디어 분야의 웹 서비스를 개발해 왔습니다.</p>
+          <p>프론트엔드부터 백엔드, 인프라까지 작업했습니다.</p>
+        </div>
         <div class="skill-grid">
           <article><h3>서비스 개발</h3><p>미디어, 농업, 에너지 분야의 웹 서비스</p></article>
           <article><h3>데이터 시각화</h3><p>Vue.js·D3.js 대시보드와 차트</p></article>
@@ -115,6 +116,8 @@
       <p class="footer-note">© EastBlaze</p>
     </footer>
   </div>
-  <button id="scroll-to-top" class="scroll-to-top" type="button" aria-label="맨 위로 이동" disabled>↑</button>
+  <button id="scroll-to-top" class="scroll-to-top" type="button" aria-label="맨 위로 이동" data-tip="맨 위로 이동" disabled><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 11 7-7 7 7M12 4v16"/></svg></button>
+  <div id="control-tooltip" role="tooltip" hidden></div>
+  <p id="ui-feedback" class="ui-feedback" role="status" aria-live="polite"></p>
 </body>
 </html>

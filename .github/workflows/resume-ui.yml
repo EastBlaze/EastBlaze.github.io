@@ -21,7 +21,7 @@ jobs:
       - name: Check field ordering, URLs and DOM initialization
         run: node --test tests/*.test.cjs
       - name: Check production syntax
-        run: node --check project-view.js && node --check index.js
+        run: node --check project-view.js && node --check index.js && node --check ui-controls.js
       - name: Verify release asset hashes and cache isolation
         run: |
           python3 scripts/build_assets.py --check

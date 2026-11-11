@@ -235,6 +235,15 @@
 
   async function initialize() {
     const projectControls = all("[data-focus]");
+    // Native fragments are resolved before async cards exist. Restore only the
+    // initial project link, and never override navigation made while loading.
+    const initialHash = window.location.hash;
+    const initialScroll = window.scrollY;
+    const initialFocus = document.activeElement;
+    let restoreProjectAnchor = /^#project-[a-z0-9-]+$/.test(initialHash);
+    const cancelAnchor = () => { restoreProjectAnchor = false; };
+    const navigationEvents = restoreProjectAnchor ? ["pointerdown", "keydown", "wheel", "touchstart", "hashchange"] : [];
+    navigationEvents.forEach((event) => window.addEventListener(event, cancelAnchor, { once: true, passive: true }));
     restoreUrlState();
     all("[data-focus]").forEach((button) => button.addEventListener("click", () => setFocus(button.dataset.focus)));
     window.addEventListener("popstate", () => {
@@ -278,8 +287,14 @@
       $(".site-header").append(index);
       render();
       projectControls.forEach((control) => { control.disabled = false; });
+      if (restoreProjectAnchor && window.location.hash === initialHash &&
+          window.scrollY === initialScroll && document.activeElement === initialFocus) {
+        $(initialHash)?.scrollIntoView({ block: "start", behavior: "instant" });
+      }
     } catch (error) {
       $("#project-list").replaceChildren(element("p", "empty-state", "프로젝트를 불러오지 못했습니다. 페이지를 새로고침해 주세요."));
+    } finally {
+      navigationEvents.forEach((event) => window.removeEventListener(event, cancelAnchor));
     }
   }
 

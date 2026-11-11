@@ -42,7 +42,7 @@ byte-for-byte under `experiments/search/historical/pr8/`; see the experiment
 
 ## Static release assets
 
-Production HTML links to content-hashed copies of `project-view.js`, `index.js`
+Production HTML links to content-hashed copies of `project-view.js`, `index.js`,
 `index.css` and `ui-controls.js`. The original filenames remain editable sources. After changing
 any of them, run:
 

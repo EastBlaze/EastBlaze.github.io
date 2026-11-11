@@ -69,6 +69,7 @@ class Element {
   addEventListener(name, callback) { this.events[name] = callback; }
   setAttribute(name, value) { this.attributes[name] = value; }
   focus() { this.focused = true; }
+  scrollIntoView() { this.scrolledIntoView = true; }
 }
 function app({ href = 'https://eastblaze.dev/', response = { ok: true, json: async () => ({ projects }) } } = {}) {
   const root = new Element();
@@ -85,7 +86,7 @@ function app({ href = 'https://eastblaze.dev/', response = { ok: true, json: asy
   const all = selector => descendants(root).filter(node => selector === '[data-focus]'
     ? Boolean(node.dataset.focus) : node.className.split(' ').includes(selector.slice(1)));
   const document = {
-    querySelector: selector => selector.startsWith('#') ? elements[selector.slice(1)] || null : all(selector)[0] || null,
+    querySelector: selector => selector.startsWith('#') ? elements[selector.slice(1)] || descendants(root).find(node => node.id === selector.slice(1)) || null : all(selector)[0] || null,
     querySelectorAll: all, createElement: tag => new Element(tag),
     createDocumentFragment: () => new Element('fragment'), createTextNode: text => Object.assign(new Element('text'), { textContent: text }),
   };
@@ -94,6 +95,7 @@ function app({ href = 'https://eastblaze.dev/', response = { ok: true, json: asy
     location: new URL(href), history: { replaceState: (_, __, url) => { window.location = new URL(url); } },
     matchMedia: () => ({ matches: true, addEventListener() {} }), scrollY: 0,
     addEventListener: (event, callback) => { windowEvents[event] = callback; }, scrollTo() {},
+    removeEventListener: (event, callback) => { if (windowEvents[event] === callback) delete windowEvents[event]; },
   };
   const context = { window, document, URL, console, fetch: async path => { requests.push(path); return response; } };
   runInNewContext(readFileSync(require.resolve('../project-view.js'), 'utf8'), context);
@@ -170,4 +172,19 @@ test('desktop project index preserves public order and is not duplicated by sort
     projects.map(project => ['#project-' + project.id, project.title]));
   ui.buttons[5].events.click(); ui.buttons[0].events.click();
   assert.equal(ui.header.children.filter(node => node.className === 'project-index-nav').length, 1);
+});
+
+
+test('initial project fragments wait for data and never override newer navigation', async () => {
+  for (const interaction of [null, 'pointerdown', 'keydown', 'wheel', 'touchstart', 'hashchange']) {
+    let resolveData;
+    const pending = new Promise(resolve => { resolveData = resolve; });
+    const ui = app({ href: 'https://eastblaze.dev/#project-activity-measurement', response: { ok: true, json: () => pending } });
+    if (interaction) ui.windowEvents[interaction]();
+    resolveData({ projects }); await ui.ready();
+    const target = ui.elements['project-list'].children.find(card => card.id === 'project-activity-measurement');
+    assert.equal(Boolean(target.scrolledIntoView), interaction === null);
+    assert.equal(target.focused, undefined);
+    for (const event of ['pointerdown', 'keydown', 'wheel', 'touchstart', 'hashchange']) assert.equal(ui.windowEvents[event], undefined);
+  }
 });

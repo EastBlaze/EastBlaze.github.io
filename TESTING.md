@@ -190,7 +190,7 @@ keyboard focus, tooltip Escape, theme switching, and continuous motion beyond
 five seconds. Browser viewport emulation is not physical-device or screen-reader
 certification. Screenshot review is separate from automated assertions.
 
-Final local evidence: 8 UI contracts, 24 archived-experiment contracts, 6 Python
+Final local evidence: 9 UI contracts, 24 archived-experiment contracts, 6 Python
 metric checks and 4 cache tests pass on MacMini (Node v26.0.0, Python 3.9.6).
 All eight browser combinations pass; 320px/tablet/landscape and no-JS checks pass.
 Actual screenshot inspection found a light-theme mobile anchor-offset specificity
@@ -199,3 +199,9 @@ Chromium axe reports no confirmed violations. Automatic contrast review remains
 incomplete for one desktop project-index link and one mobile project-tech block;
 that is not reported as a complete accessibility certification. The explicit
 neutral colors retain B4's text contrast on opaque surfaces.
+
+Independent review also found delayed project-fragment navigation: a copied
+`#project-…` URL could resolve before async cards existed. One-time restoration
+after initial rendering now respects any newer pointer/key/wheel/touch/hash
+navigation, scroll position or focus. A delayed-data contract verifies restoration,
+cancellation and listener cleanup without moving focus.

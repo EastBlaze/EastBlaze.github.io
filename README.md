@@ -39,3 +39,25 @@ Run `node --test tests/*.test.cjs` for field-ordering, URL and DOM initializatio
 contracts. Historical search code, measurements and provenance are preserved
 byte-for-byte under `experiments/search/historical/pr8/`; see the experiment
 [README](experiments/search/README.md) before reproducing or starting new work.
+
+## Static release assets
+
+Production HTML links to content-hashed copies of `project-view.js`, `index.js`
+and `index.css`. The original filenames remain editable sources. After changing
+any of them, run:
+
+```sh
+python3 scripts/build_assets.py
+python3 scripts/build_assets.py --check
+python3 -m unittest discover -s tests -p test_assets.py
+```
+
+Commit the updated HTML and generated assets together. Keep previously generated
+hashed assets so cached HTML from an earlier release can still load its matching
+code. CI rejects stale HTML references, missing generated files and changed bytes.
+
+This prevents the production failure where fresh HTML without search controls
+loaded a cached old `index.js` and threw while registering the removed search
+button. The CDN advertises a longer cache lifetime for JS/CSS than HTML, so
+successful deployment and fresh HTTP fetches alone cannot prove returning-user
+browser behavior. Verify the actual production page after deployment too.

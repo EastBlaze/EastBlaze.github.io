@@ -26,3 +26,16 @@ See [TESTING.md](TESTING.md) for the production UI and isolated search experimen
 contracts, code-first checks, MacMini testbed, remaining browser checks, and
 independent retrieval-quality gates. A passing experiment is not approval to
 change the public resume or deploy semantic search.
+
+## Current project browsing
+
+The public page temporarily omits job-description search and result summaries.
+Field buttons move related projects first and keep every project visible.
+The default-order button restores the original order. Only `focus` is restored
+from links. Retired `needs` parameters are ignored and removed on initialization,
+field changes and history navigation, including when loading projects fails.
+
+Run `node --test tests/*.test.cjs` for field-ordering, URL and DOM initialization
+contracts. Historical search code, measurements and provenance are preserved
+byte-for-byte under `experiments/search/historical/pr8/`; see the experiment
+[README](experiments/search/README.md) before reproducing or starting new work.

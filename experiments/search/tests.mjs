@@ -14,17 +14,19 @@ import { readBody, resolvePublicPath, requestHandler } from './server.mjs';
 
 const read = path => readFileSync(new URL(path, import.meta.url), 'utf8');
 const hash = value => createHash('sha256').update(value).digest('hex');
-const source = read('../../index.js');
-const projects = JSON.parse(read('../../projects.json')).projects;
+const historical = './historical/pr8/';
+const recorded = historical + 'experiments/search/';
+const source = read(historical + 'index.js');
+const projects = JSON.parse(read(historical + 'projects.json')).projects;
 const query = baseline(source);
-const cases = JSON.parse(read('./cases.json'));
-const resultsText = read('./results-node.json');
+const cases = JSON.parse(read(recorded + 'cases.json'));
+const resultsText = read(recorded + 'results-node.json');
 const results = JSON.parse(resultsText);
-const parity = JSON.parse(read('./tokenizer-parity.json'));
+const parity = JSON.parse(read(recorded + 'tokenizer-parity.json'));
 
-test('production source and corpus match recorded provenance', () => {
-  const provenance = JSON.parse(read('./provenance.json'));
-  for (const [path, digest] of Object.entries(provenance.sourceSha256)) assert.equal(hash(read('../../' + path)), digest);
+test('historical source and corpus match recorded provenance', () => {
+  const provenance = JSON.parse(read(recorded + 'provenance.json'));
+  for (const [path, digest] of Object.entries(provenance.sourceSha256)) assert.equal(hash(read(historical + path)), digest);
 });
 test('baseline adapter rejects changed wrapper or extraction boundary', () => {
   assert.throws(() => baseline(source.replace('  function element(', '  function changed(')), /layout/);
@@ -126,16 +128,16 @@ test('model failures mark result incomplete, still run other model, and release 
   assert.ok(result.cases[0].e5tiny);
   assert.deepEqual(disposed, METHODS);
 });
-test('recorded results are tied to every current experiment input', () => {
+test('recorded results are tied to every archived experiment input', () => {
   assert.equal(results.schemaVersion, 2);
   assert.equal(results.complete, true);
   assert.deepEqual(Object.keys(results.inputSha256).sort(), [...INPUT_FILES].sort());
   for (const file of INPUT_FILES) {
-    const relative = file.replace('/repo/', '../../').replace('/harness/', './');
+    const relative = file.replace('/repo/', historical).replace('/harness/', recorded);
     assert.equal(results.inputSha256[file], hash(read(relative)), `Stale result: ${file}`);
   }
 });
-test('recorded corpus, case content, labels and lexical rankings match current inputs', () => {
+test('recorded corpus, case content, labels and lexical rankings match archived inputs', () => {
   assert.deepEqual(results.projects, projects.map(p => p.id));
   assert.deepEqual(results.documents, projects.map(p => ({ id: p.id, text: documentText(p) })));
   assert.equal(results.cases.length, cases.length);
@@ -145,7 +147,7 @@ test('recorded corpus, case content, labels and lexical rankings match current i
   }
 });
 test('recorded model files match pinned manifest and include every inference input', () => {
-  const manifest = JSON.parse(read('./model-manifest.json'));
+  const manifest = JSON.parse(read(recorded + 'model-manifest.json'));
   assert.equal(Object.keys(results.verifiedModelSha256).length, 5);
   for (const [file, digest] of Object.entries(results.verifiedModelSha256)) {
     assert.equal(digest, manifest.files.find(f => '/models/' + f.local_path === file)?.sha256);
@@ -166,10 +168,10 @@ test('recorded WASM runs cover all cases with complete, finite, sorted rankings'
     }
   }
 });
-test('parity is tied to current results and reference script, not an unrelated success JSON', () => {
+test('parity is tied to historical results and reference script, not an unrelated success JSON', () => {
   assert.equal(parity.resultSha256, hash(resultsText));
-  assert.equal(parity.verifierSha256, hash(read('./verify-tokenizers.py')));
-  assert.equal(parity.boundaryToolSha256, hash(read('./tokenizer-boundaries.mjs')));
+  assert.equal(parity.verifierSha256, hash(read(recorded + 'verify-tokenizers.py')));
+  assert.equal(parity.boundaryToolSha256, hash(read(recorded + 'tokenizer-boundaries.mjs')));
   for (const method of METHODS) {
     assert.equal(parity[method].exactIdMatches, 30);
     assert.equal(parity[method].passages.exactIdMatches, 5);
@@ -227,4 +229,12 @@ test('result save rejects foreign origins, bad JSON, and untrusted hosts; valid 
     assert.equal((await request()).status, 200);
     assert.equal(JSON.parse(await readFile(destination, 'utf8')).complete, true);
   } finally { await rm(dir, { recursive: true, force: true }); }
+});
+
+// The snapshot is copied from Git, never reconstructed by updating measured hashes.
+test('every historical file retains its exact archived bytes', () => {
+  const manifest = JSON.parse(read('./historical/manifest.json'));
+  for (const [file, entry] of Object.entries(manifest)) {
+    assert.equal(hash(read(historical + file)), entry.sha256, `Changed archive: ${file}`);
+  }
 });

@@ -1,0 +1,89 @@
+{
+  "license": "Apache-2.0, both model cards",
+  "files": [
+    {
+      "local_path": "e5/1_Pooling/config.json",
+      "url": "https://huggingface.co/exp-models/dragonkue-KoEn-E5-Tiny/resolve/292c09c78c71a3f00ed56ee0d1ed9f0d39182fc9/1_Pooling/config.json",
+      "bytes": 296,
+      "sha256": "a19c83805e1ce4174f3fbfec4ac8d3b8dbae0c958f8fd51b80937eb33e0c5335"
+    },
+    {
+      "local_path": "e5/README.md",
+      "url": "https://huggingface.co/exp-models/dragonkue-KoEn-E5-Tiny/resolve/292c09c78c71a3f00ed56ee0d1ed9f0d39182fc9/README.md",
+      "bytes": 22241,
+      "sha256": "627995fb820eb672cc15df413940a07325d75f78bab2b785fd79dc5a72f6caa8"
+    },
+    {
+      "local_path": "e5/config.json",
+      "url": "https://huggingface.co/exp-models/dragonkue-KoEn-E5-Tiny/resolve/292c09c78c71a3f00ed56ee0d1ed9f0d39182fc9/config.json",
+      "bytes": 627,
+      "sha256": "2dcfffa3b90b53294e612d1eb42850da3ba9a0b66fd9b2363d661b6c6174d3c0"
+    },
+    {
+      "local_path": "e5/modules.json",
+      "url": "https://huggingface.co/exp-models/dragonkue-KoEn-E5-Tiny/resolve/292c09c78c71a3f00ed56ee0d1ed9f0d39182fc9/modules.json",
+      "bytes": 349,
+      "sha256": "84e40c8e006c9b1d6c122e02cba9b02458120b5fb0c87b746c41e0207cf642cf"
+    },
+    {
+      "local_path": "e5/onnx/model_qint8_arm64.onnx",
+      "url": "https://huggingface.co/exp-models/dragonkue-KoEn-E5-Tiny/resolve/292c09c78c71a3f00ed56ee0d1ed9f0d39182fc9/onnx/model_qint8_arm64.onnx",
+      "bytes": 38275821,
+      "sha256": "d463c9b1c29f3202d510e2836265d60f9e6e6dd518c5930ba865700646489bd4"
+    },
+    {
+      "local_path": "e5/sentence_bert_config.json",
+      "url": "https://huggingface.co/exp-models/dragonkue-KoEn-E5-Tiny/resolve/292c09c78c71a3f00ed56ee0d1ed9f0d39182fc9/sentence_bert_config.json",
+      "bytes": 53,
+      "sha256": "ec8e29d6dcb61b611b7d3fdd2982c4524e6ad985959fa7194eacfb655a8d0d51"
+    },
+    {
+      "local_path": "e5/special_tokens_map.json",
+      "url": "https://huggingface.co/exp-models/dragonkue-KoEn-E5-Tiny/resolve/292c09c78c71a3f00ed56ee0d1ed9f0d39182fc9/special_tokens_map.json",
+      "bytes": 965,
+      "sha256": "38d989b0fdad0fec0c67c14b1f3c8b68184022cf6d4adc5444526ced8653f738"
+    },
+    {
+      "local_path": "e5/tokenizer.json",
+      "url": "https://huggingface.co/exp-models/dragonkue-KoEn-E5-Tiny/resolve/292c09c78c71a3f00ed56ee0d1ed9f0d39182fc9/tokenizer.json",
+      "bytes": 2931715,
+      "sha256": "a6dd38d692ac1caa6d5dbc195d92f1f978b5c74ec60e02ed15fdf04404742fe3"
+    },
+    {
+      "local_path": "e5/tokenizer_config.json",
+      "url": "https://huggingface.co/exp-models/dragonkue-KoEn-E5-Tiny/resolve/292c09c78c71a3f00ed56ee0d1ed9f0d39182fc9/tokenizer_config.json",
+      "bytes": 1397,
+      "sha256": "a31cce3039d1c0610730707190f378fa2160f051c9172639fde71a41d2aaacf8"
+    },
+    {
+      "local_path": "static/README.md",
+      "url": "https://huggingface.co/kekeappa/kor-static-embedding-64/resolve/cd83eb6b52aa4ea0401cbff7c51c6e21d20e3d6c/README.md",
+      "bytes": 2493,
+      "sha256": "e3cf8d1711b92c16d7259e8d9baeb81460b98a259d446434b7dc958549ed9430"
+    },
+    {
+      "local_path": "static/config_sentence_transformers.json",
+      "url": "https://huggingface.co/kekeappa/kor-static-embedding-64/resolve/cd83eb6b52aa4ea0401cbff7c51c6e21d20e3d6c/config_sentence_transformers.json",
+      "bytes": 277,
+      "sha256": "330fafe35ca4c742817da8efd8d048310f45c89548e7fdea10b94d32c8ce46f7"
+    },
+    {
+      "local_path": "static/model.safetensors",
+      "url": "https://huggingface.co/kekeappa/kor-static-embedding-64/resolve/cd83eb6b52aa4ea0401cbff7c51c6e21d20e3d6c/model.safetensors",
+      "bytes": 8192096,
+      "sha256": "610690daedd7fb81bd2446e6ebaba191f2f0519b74334f62aa649cd69ef13fc4"
+    },
+    {
+      "local_path": "static/modules.json",
+      "url": "https://huggingface.co/kekeappa/kor-static-embedding-64/resolve/cd83eb6b52aa4ea0401cbff7c51c6e21d20e3d6c/modules.json",
+      "bytes": 156,
+      "sha256": "029176c464bef333209cbfbab84663909d829d305031cd95b4a019168dcc611a"
+    },
+    {
+      "local_path": "static/tokenizer.json",
+      "url": "https://huggingface.co/kekeappa/kor-static-embedding-64/resolve/cd83eb6b52aa4ea0401cbff7c51c6e21d20e3d6c/tokenizer.json",
+      "bytes": 751999,
+      "sha256": "cc02cedb56df2e4d3bb6b5478cef6aa0daa98930c96b46976c8acdd2432459a8"
+    }
+  ]
+}

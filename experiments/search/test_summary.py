@@ -8,17 +8,18 @@ import unittest
 from summarize import summarize
 
 ROOT = Path(__file__).resolve().parent
-RESULTS = json.loads((ROOT / 'results-node.json').read_text())
+HISTORICAL = ROOT / 'historical/pr8/experiments/search'
+RESULTS = json.loads((HISTORICAL / 'results-node.json').read_text())
 
 
 class SummaryTests(unittest.TestCase):
-    def test_generated_summary_is_current(self):
-        saved = json.loads((ROOT / 'summary.json').read_text())
+    def test_historical_summary_matches_archived_measurements(self):
+        saved = json.loads((HISTORICAL / 'summary.json').read_text())
         expected = summarize(RESULTS)
         for key, value in expected.items():
             self.assertEqual(saved[key], value)
-        self.assertEqual(saved['resultSha256'], hashlib.sha256((ROOT / 'results-node.json').read_bytes()).hexdigest())
-        self.assertEqual(saved['summarizerSha256'], hashlib.sha256((ROOT / 'summarize.py').read_bytes()).hexdigest())
+        self.assertEqual(saved['resultSha256'], hashlib.sha256((HISTORICAL / 'results-node.json').read_bytes()).hexdigest())
+        self.assertEqual(saved['summarizerSha256'], hashlib.sha256((HISTORICAL / 'summarize.py').read_bytes()).hexdigest())
 
     def test_partial_runs_are_rejected(self):
         result = copy.deepcopy(RESULTS)

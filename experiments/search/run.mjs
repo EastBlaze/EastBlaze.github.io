@@ -6,7 +6,7 @@ import { chromium } from 'playwright';
 import { requestHandler } from './server.mjs';
 
 const root = dirname(fileURLToPath(import.meta.url));
-const resultsFile = resolve(root, process.env.RESULTS_FILE || 'results.json');
+const resultsFile = resolve(root, process.env.RESULTS_FILE || 'results-fresh.json');
 const roots = { harness: root, repo: resolve(root, '../..'),
   models: resolve(process.env.MODELS_DIR || resolve(root, 'models')), deps: resolve(root, 'node_modules') };
 const server = createServer(requestHandler({ roots, resultsFile }));

@@ -203,5 +203,6 @@ neutral colors retain B4's text contrast on opaque surfaces.
 Independent review also found delayed project-fragment navigation: a copied
 `#project-…` URL could resolve before async cards existed. One-time restoration
 after initial rendering now respects any newer pointer/key/wheel/touch/hash
-navigation, scroll position or focus. A delayed-data contract verifies restoration,
+navigation or focus. Browser-managed scroll restoration during a slow reload
+is allowed to settle at the requested project, rather than being mistaken for user input. A delayed-data contract verifies restoration,
 cancellation and listener cleanup without moving focus.

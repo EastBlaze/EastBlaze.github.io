@@ -181,6 +181,8 @@ test('initial project fragments wait for data and never override newer navigatio
     const pending = new Promise(resolve => { resolveData = resolve; });
     const ui = app({ href: 'https://eastblaze.dev/#project-activity-measurement', response: { ok: true, json: () => pending } });
     if (interaction) ui.windowEvents[interaction]();
+    // Browser history restoration may move a short loading document without input.
+    ui.window.scrollY = 350;
     resolveData({ projects }); await ui.ready();
     const target = ui.elements['project-list'].children.find(card => card.id === 'project-activity-measurement');
     assert.equal(Boolean(target.scrolledIntoView), interaction === null);

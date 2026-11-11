@@ -238,7 +238,6 @@
     // Native fragments are resolved before async cards exist. Restore only the
     // initial project link, and never override navigation made while loading.
     const initialHash = window.location.hash;
-    const initialScroll = window.scrollY;
     const initialFocus = document.activeElement;
     let restoreProjectAnchor = /^#project-[a-z0-9-]+$/.test(initialHash);
     const cancelAnchor = () => { restoreProjectAnchor = false; };
@@ -288,7 +287,7 @@
       render();
       projectControls.forEach((control) => { control.disabled = false; });
       if (restoreProjectAnchor && window.location.hash === initialHash &&
-          window.scrollY === initialScroll && document.activeElement === initialFocus) {
+          document.activeElement === initialFocus) {
         $(initialHash)?.scrollIntoView({ block: "start", behavior: "instant" });
       }
     } catch (error) {

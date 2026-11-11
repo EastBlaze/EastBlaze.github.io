@@ -3,7 +3,7 @@ main page for eastblaze
 
 ## Public Markdown resume
 
-The navigation's **For AI · Markdown 이력서** link serves `/resume.md` as a
+The header's compact **.md** link serves `/resume.md` as a
 static text file. It contains only information already published in the resume.
 
 `index.html` remains the source for the introduction, skills, technology groups,
@@ -42,8 +42,8 @@ byte-for-byte under `experiments/search/historical/pr8/`; see the experiment
 
 ## Static release assets
 
-Production HTML links to content-hashed copies of `project-view.js`, `index.js`
-and `index.css`. The original filenames remain editable sources. After changing
+Production HTML links to content-hashed copies of `project-view.js`, `index.js`,
+`index.css` and `ui-controls.js`. The original filenames remain editable sources. After changing
 any of them, run:
 
 ```sh
@@ -61,3 +61,17 @@ loaded a cached old `index.js` and threw while registering the removed search
 button. The CDN advertises a longer cache lifetime for JS/CSS than HTML, so
 successful deployment and fresh HTTP fetches alone cannot prove returning-user
 browser behavior. Verify the actual production page after deployment too.
+
+## Blueprint layout
+
+The B4 presentation uses a small identity line, a work-led introduction,
+visible project evidence, and a desktop project index. The `.md` and theme
+controls form one 88×44 group below the desktop logo or at the mobile right edge.
+The theme follows the system until changed for this page. Decorative icons move
+on three slow 45-degree rails, with reduced-motion respected from first paint.
+
+Field ordering is available under the compact **분야별 우선 보기** disclosure.
+All five projects remain visible; no job-description search is enabled.
+`projects.json` remains unchanged. The original introduction is preserved under
+skills and in the generated Markdown. Project evidence is never rewritten by
+the presentation layer.

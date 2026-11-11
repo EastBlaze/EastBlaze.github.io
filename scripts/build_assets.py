@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SOURCES = ('project-view.js', 'index.js', 'index.css')
+SOURCES = ('project-view.js', 'index.js', 'index.css', 'ui-controls.js')
 
 
 def asset_name(name, content):

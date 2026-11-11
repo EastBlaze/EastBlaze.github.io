@@ -69,6 +69,7 @@ class Element {
   addEventListener(name, callback) { this.events[name] = callback; }
   setAttribute(name, value) { this.attributes[name] = value; }
   focus() { this.focused = true; }
+  scrollIntoView() { this.scrolledIntoView = true; }
 }
 function app({ href = 'https://eastblaze.dev/', response = { ok: true, json: async () => ({ projects }) } } = {}) {
   const root = new Element();
@@ -78,12 +79,14 @@ function app({ href = 'https://eastblaze.dev/', response = { ok: true, json: asy
     const button = new Element('button'); button.dataset.focus = focus;
     button.attributes['aria-pressed'] = String(focus === 'all'); return button;
   });
-  root.append(...Object.values(elements), logo, ...buttons);
+  const header = new Element('header'); header.className = 'site-header';
+  header.append(logo);
+  root.append(...Object.values(elements), header, ...buttons);
   const descendants = node => [node, ...node.children.flatMap(descendants)];
   const all = selector => descendants(root).filter(node => selector === '[data-focus]'
     ? Boolean(node.dataset.focus) : node.className.split(' ').includes(selector.slice(1)));
   const document = {
-    querySelector: selector => selector.startsWith('#') ? elements[selector.slice(1)] || null : all(selector)[0] || null,
+    querySelector: selector => selector.startsWith('#') ? elements[selector.slice(1)] || descendants(root).find(node => node.id === selector.slice(1)) || null : all(selector)[0] || null,
     querySelectorAll: all, createElement: tag => new Element(tag),
     createDocumentFragment: () => new Element('fragment'), createTextNode: text => Object.assign(new Element('text'), { textContent: text }),
   };
@@ -92,11 +95,12 @@ function app({ href = 'https://eastblaze.dev/', response = { ok: true, json: asy
     location: new URL(href), history: { replaceState: (_, __, url) => { window.location = new URL(url); } },
     matchMedia: () => ({ matches: true, addEventListener() {} }), scrollY: 0,
     addEventListener: (event, callback) => { windowEvents[event] = callback; }, scrollTo() {},
+    removeEventListener: (event, callback) => { if (windowEvents[event] === callback) delete windowEvents[event]; },
   };
   const context = { window, document, URL, console, fetch: async path => { requests.push(path); return response; } };
   runInNewContext(readFileSync(require.resolve('../project-view.js'), 'utf8'), context);
   runInNewContext(readFileSync(require.resolve('../index.js'), 'utf8'), context);
-  return { window, elements, buttons, requests, windowEvents, ready: () => new Promise(resolve => setImmediate(resolve)),
+  return { window, elements, header, buttons, requests, windowEvents, ready: () => new Promise(resolve => setImmediate(resolve)),
     cardIds: () => elements['project-list'].children.map(card => card.dataset.projectId) };
 }
 
@@ -136,5 +140,53 @@ test('failed project loading leaves readable failure, disabled controls, and cle
     assert.equal(ui.window.location.search, '');
     assert.ok(ui.buttons.every(button => button.disabled));
     assert.match(ui.elements['project-list'].children[0].textContent, /불러오지 못했습니다/);
+  }
+});
+
+test('blueprint cards expose every original evidence text with stable accessible anchors', async () => {
+  const ui = app(); await ui.ready();
+  const descendants = node => [node, ...node.children.flatMap(descendants)];
+  for (const project of projects) {
+    const card = ui.elements['project-list'].children.find(node => node.dataset.projectId === project.id);
+    assert.equal(card.id, 'project-' + project.id);
+    assert.equal(card.tabIndex, 0);
+    assert.equal(card.attributes['aria-labelledby'], 'title-' + project.id);
+    assert.equal(descendants(card).find(node => node.tagName === 'h3').id, 'title-' + project.id);
+    assert.deepEqual(descendants(card).filter(node => node.tagName === 'dd').map(node => node.textContent), project.evidence.map(entry => entry.text));
+    assert.equal(descendants(card).some(node => node.tagName === 'details'), false);
+  }
+  const rails = ui.elements['ambient-stack'].children;
+  assert.equal(rails.length, 3);
+  for (const rail of rails) {
+    assert.equal(rail.className, 'ambient-rail');
+    assert.equal(rail.children[0].children.length, 4);
+  }
+});
+
+
+test('desktop project index preserves public order and is not duplicated by sorting', async () => {
+  const ui = app(); await ui.ready();
+  const index = ui.header.children.find(node => node.className === 'project-index-nav');
+  assert.equal(index.attributes['aria-label'], '프로젝트 바로가기');
+  assert.deepEqual(index.children.filter(node => node.tagName === 'a').map(node => [node.href, node.textContent]),
+    projects.map(project => ['#project-' + project.id, project.title]));
+  ui.buttons[5].events.click(); ui.buttons[0].events.click();
+  assert.equal(ui.header.children.filter(node => node.className === 'project-index-nav').length, 1);
+});
+
+
+test('initial project fragments wait for data and never override newer navigation', async () => {
+  for (const interaction of [null, 'pointerdown', 'keydown', 'wheel', 'touchstart', 'hashchange']) {
+    let resolveData;
+    const pending = new Promise(resolve => { resolveData = resolve; });
+    const ui = app({ href: 'https://eastblaze.dev/#project-activity-measurement', response: { ok: true, json: () => pending } });
+    if (interaction) ui.windowEvents[interaction]();
+    // Browser history restoration may move a short loading document without input.
+    ui.window.scrollY = 350;
+    resolveData({ projects }); await ui.ready();
+    const target = ui.elements['project-list'].children.find(card => card.id === 'project-activity-measurement');
+    assert.equal(Boolean(target.scrolledIntoView), interaction === null);
+    assert.equal(target.focused, undefined);
+    for (const event of ['pointerdown', 'keydown', 'wheel', 'touchstart', 'hashchange']) assert.equal(ui.windowEvents[event], undefined);
   }
 });

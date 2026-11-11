@@ -37,8 +37,9 @@
     if (!root) return;
     const fragment = document.createDocumentFragment();
     for (const row of AMBIENT_ROWS) {
+      const rail = element("div", "ambient-rail");
       const lane = element("div", "ambient-lane");
-      for (let repeat = 0; repeat < 2; repeat++) {
+      for (let repeat = 0; repeat < 4; repeat++) {
         const sequence = element("div", "ambient-sequence");
         for (const icon of row) {
           const img = element("img", "ambient-icon");
@@ -53,7 +54,8 @@
         }
         lane.append(sequence);
       }
-      fragment.append(lane);
+      rail.append(lane);
+      fragment.append(rail);
     }
     root.replaceChildren(fragment);
     updateHighlights();
@@ -150,6 +152,9 @@
     const project = result.project;
     const card = element("article", "project-card" + (result.role ? " featured" : ""));
     card.dataset.projectId = project.id;
+    card.id = "project-" + project.id;
+    card.tabIndex = 0;
+    card.setAttribute("aria-labelledby", "title-" + project.id);
     card.addEventListener("mouseenter", () => {
       if (!finePointer.matches) return;
       state.hoveredProjectId = project.id;
@@ -172,7 +177,11 @@
     const top = element("div", "project-topline");
     top.append(element("span", "project-index", String(index + 1).padStart(2, "0") + " / PROJECT"));
     if (result.role) top.append(element("span", "project-label", "선택 분야 관련"));
-    card.append(top, element("h3", "", project.title), element("p", "", project.subtitle));
+    const title = element("h3", "", project.title);
+    title.id = "title-" + project.id;
+    card.append(top, title);
+    // Other subtitles repeat the work shown directly below. Keep the distinct outcome.
+    if (project.id === "pig-management") card.append(element("p", "project-outcome", project.subtitle));
 
     if (project.technologies?.length) {
       const tech = element("div", "project-tech");
@@ -181,28 +190,15 @@
       card.append(tech);
     }
 
-    const tags = element("div", "tag-list");
-    project.tags.forEach((tag) => tags.append(element("span", "tag", tag)));
-    card.append(tags);
-
-    const relevant = result.evidence;
-    if (relevant.length) {
-      const reasons = element("div", "match-reasons");
-      reasons.append(element("strong", "", "관련 작업"));
-      const list = element("ul");
-      relevant.forEach((entry) => list.append(element("li", "", entry.text)));
-      reasons.append(list);
-      card.append(reasons);
-    }
-
-    const details = element("details");
-    const summary = element("summary", "", "자세히 보기");
+    const proof = element("div", "project-proof");
+    proof.append(element("h4", "", "작업 내용"));
     const descList = element("dl");
     project.evidence.forEach((entry) => {
-      descList.append(element("dt", "", entry.label), element("dd", "", entry.text));
+      const description = element("dd", result.evidence.includes(entry) ? "is-relevant-proof" : "", entry.text);
+      descList.append(element("dt", "", entry.label), description);
     });
-    details.append(summary, descList);
-    card.append(details);
+    proof.append(descList);
+    card.append(proof);
     return card;
   }
 
@@ -239,6 +235,14 @@
 
   async function initialize() {
     const projectControls = all("[data-focus]");
+    // Native fragments are resolved before async cards exist. Restore only the
+    // initial project link, and never override navigation made while loading.
+    const initialHash = window.location.hash;
+    const initialFocus = document.activeElement;
+    let restoreProjectAnchor = /^#project-[a-z0-9-]+$/.test(initialHash);
+    const cancelAnchor = () => { restoreProjectAnchor = false; };
+    const navigationEvents = restoreProjectAnchor ? ["pointerdown", "keydown", "wheel", "touchstart", "hashchange"] : [];
+    navigationEvents.forEach((event) => window.addEventListener(event, cancelAnchor, { once: true, passive: true }));
     restoreUrlState();
     all("[data-focus]").forEach((button) => button.addEventListener("click", () => setFocus(button.dataset.focus)));
     window.addEventListener("popstate", () => {
@@ -271,10 +275,25 @@
       if (!Array.isArray(payload.projects)) throw new Error("잘못된 데이터 형식");
       state.projects = payload.projects;
       renderAmbient();
+      const index = element("nav", "project-index-nav");
+      index.setAttribute("aria-label", "프로젝트 바로가기");
+      index.append(element("p", "rail-label", "작업 목록"));
+      state.projects.forEach((project) => {
+        const link = element("a", "", project.title);
+        link.href = "#project-" + project.id;
+        index.append(link);
+      });
+      $(".site-header").append(index);
       render();
       projectControls.forEach((control) => { control.disabled = false; });
+      if (restoreProjectAnchor && window.location.hash === initialHash &&
+          document.activeElement === initialFocus) {
+        $(initialHash)?.scrollIntoView({ block: "start", behavior: "instant" });
+      }
     } catch (error) {
       $("#project-list").replaceChildren(element("p", "empty-state", "프로젝트를 불러오지 못했습니다. 페이지를 새로고침해 주세요."));
+    } finally {
+      navigationEvents.forEach((event) => window.removeEventListener(event, cancelAnchor));
     }
   }
 

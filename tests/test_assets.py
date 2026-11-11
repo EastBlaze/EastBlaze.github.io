@@ -12,7 +12,7 @@ spec.loader.exec_module(assets)
 
 class AssetTests(unittest.TestCase):
     def fixture(self, root):
-        (root / 'index.html').write_text('<link href="./index.css"><script src="./project-view.js" defer></script><script src="./index.js" defer></script>')
+        (root / 'index.html').write_text('<link href="./index.css"><script src="./project-view.js" defer></script><script src="./index.js" defer></script><script src="./ui-controls.js" defer></script>')
         for name in assets.SOURCES:
             (root / name).write_bytes(('old ' + name).encode())
 

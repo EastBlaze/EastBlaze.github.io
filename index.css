@@ -142,7 +142,7 @@ footer h2 { margin: 0 0 16px; font-size: 25px; font-weight: 550; }
 .ambient-rail:nth-child(2) > .ambient-lane { animation-duration: 135s; animation-direction: reverse; }
 .ambient-rail:nth-child(3) > .ambient-lane { animation-duration: 185s; }
 .ambient-rail:nth-child(4) > .ambient-lane { animation-duration: 170s; animation-direction: reverse; }
-.ambient-rail:nth-child(5) > .ambient-lane { animation-duration: 150s; }
+.ambient-rail:nth-child(5) > .ambient-lane { animation-duration: 150s; animation-direction: reverse; }
 .ambient-sequence { display: flex; flex: 0 0 auto; min-width: 130vmax; justify-content: space-around; gap: clamp(38px, 6vw, 90px); padding-right: clamp(38px, 6vw, 90px); align-items: center; }
 .ambient-icon { display: block; flex: 0 0 auto; width: clamp(46px, 5vw, 66px); height: clamp(46px, 5vw, 66px); object-fit: contain; opacity: var(--neutral-icon); filter: grayscale(1) saturate(.25); transform: rotate(45deg) scale(.94); transition: opacity .45s ease, filter .45s ease, transform .45s ease; }
 .ambient-icon.is-active { opacity: var(--active-icon); filter: grayscale(0) saturate(1); transform: rotate(45deg) scale(1.13); }

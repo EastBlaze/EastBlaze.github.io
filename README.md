@@ -72,7 +72,8 @@ The theme follows the system until changed for this page. Decorative icons move
 on five slow 45-degree rails on desktop and three on mobile, with reduced-motion
 respected from first paint.
 
-Field ordering is available under the compact **분야별 우선 보기** disclosure.
+Desktop field ordering uses chips below the Projects heading. On mobile, the
+same ordering is available in a native select beside the heading.
 All five projects remain visible; no job-description search is enabled.
 `projects.json` remains unchanged. The original introduction is preserved under
 skills and in the generated Markdown. Project evidence is never rewritten by

@@ -74,6 +74,9 @@ class Element {
 function app({ href = 'https://eastblaze.dev/', response = { ok: true, json: async () => ({ projects }) }, mobile = true } = {}) {
   const root = new Element();
   const elements = Object.fromEntries(['project-list', 'ambient-stack', 'scroll-to-top'].map(id => [id, new Element()]));
+  const focusSelect = new Element('select');
+  focusSelect.value = 'all';
+  elements['focus-select'] = focusSelect;
   const logo = new Element('a'); logo.className = 'logo';
   const buttons = ['all', 'backend', 'frontend', 'ai', 'operations', 'mobile'].map(focus => {
     const button = new Element('button'); button.dataset.focus = focus;
@@ -102,7 +105,7 @@ function app({ href = 'https://eastblaze.dev/', response = { ok: true, json: asy
   const context = { window, document, URL, console, fetch: async path => { requests.push(path); return response; } };
   runInNewContext(readFileSync(require.resolve('../project-view.js'), 'utf8'), context);
   runInNewContext(readFileSync(require.resolve('../index.js'), 'utf8'), context);
-  return { window, elements, header, buttons, requests, windowEvents, ready: () => new Promise(resolve => setImmediate(resolve)),
+  return { window, elements, header, buttons, focusSelect, requests, windowEvents, ready: () => new Promise(resolve => setImmediate(resolve)),
     setMobileLayout: matches => { mobileLayout.matches = matches; layoutChange(); },
     cardIds: () => elements['project-list'].children.map(card => card.dataset.projectId) };
 }
@@ -113,9 +116,12 @@ test('full app initializes without search elements, clears legacy needs before d
   const ui = app({ href: 'https://eastblaze.dev/?needs=aws&focus=frontend#projects', response: { ok: true, json: () => pending } });
   assert.equal(ui.window.location.search, '?focus=frontend');
   assert.ok(ui.buttons.every(button => button.disabled));
+  assert.equal(ui.focusSelect.disabled, true);
   resolveData({ projects }); await ui.ready();
   assert.deepEqual(ui.requests, ['./projects.json']);
   assert.ok(ui.buttons.every(button => !button.disabled));
+  assert.equal(ui.focusSelect.disabled, false);
+  assert.equal(ui.focusSelect.value, 'frontend');
   assert.equal(ui.cardIds()[0], 'solar-dashboard');
   assert.equal(ui.cardIds().length, 5);
   assert.equal(ui.buttons[2].attributes['aria-pressed'], 'true');
@@ -137,11 +143,33 @@ test('repeated field choices restore base order and popstate cannot revive searc
   assert.equal(ui.buttons[3].attributes['aria-pressed'], 'true');
 });
 
+test('mobile and desktop order controls stay in sync with card order and history', async () => {
+  const ui = app(); await ui.ready();
+  ui.focusSelect.value = 'frontend';
+  ui.focusSelect.events.change();
+  assert.equal(ui.cardIds()[0], 'solar-dashboard');
+  assert.equal(ui.cardIds().length, projects.length);
+  assert.equal(ui.buttons[2].attributes['aria-pressed'], 'true');
+  assert.equal(ui.window.location.search, '?focus=frontend');
+
+  ui.setMobileLayout(false);
+  ui.buttons[0].events.click();
+  assert.equal(ui.focusSelect.value, 'all');
+  assert.deepEqual(ui.cardIds(), projects.map(project => project.id));
+
+  ui.window.location = new URL('https://eastblaze.dev/?focus=mobile');
+  ui.windowEvents.popstate();
+  assert.equal(ui.focusSelect.value, 'mobile');
+  assert.equal(ui.buttons[5].attributes['aria-pressed'], 'true');
+  assert.equal(ui.cardIds()[0], 'social-app');
+});
+
 test('failed project loading leaves readable failure, disabled controls, and clean legacy URL', async () => {
   for (const response of [{ ok: false, status: 503 }, { ok: true, json: async () => ({ projects: null }) }]) {
     const ui = app({ href: 'https://eastblaze.dev/?needs=aws', response }); await ui.ready();
     assert.equal(ui.window.location.search, '');
     assert.ok(ui.buttons.every(button => button.disabled));
+    assert.equal(ui.focusSelect.disabled, true);
     assert.match(ui.elements['project-list'].children[0].textContent, /불러오지 못했습니다/);
   }
 });

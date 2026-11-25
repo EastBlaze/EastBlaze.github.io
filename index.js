@@ -216,6 +216,7 @@
     all("[data-focus]").forEach((button) => {
       button.setAttribute("aria-pressed", String(button.dataset.focus === state.focus));
     });
+    $("#focus-select").value = state.focus;
   }
 
   function syncUrl() {
@@ -237,7 +238,8 @@
   }
 
   async function initialize() {
-    const projectControls = all("[data-focus]");
+    const focusButtons = all("[data-focus]");
+    const focusSelect = $("#focus-select");
     // Native fragments are resolved before async cards exist. Restore only the
     // initial project link, and never override navigation made while loading.
     const initialHash = window.location.hash;
@@ -247,7 +249,8 @@
     const navigationEvents = restoreProjectAnchor ? ["pointerdown", "keydown", "wheel", "touchstart", "hashchange"] : [];
     navigationEvents.forEach((event) => window.addEventListener(event, cancelAnchor, { once: true, passive: true }));
     restoreUrlState();
-    all("[data-focus]").forEach((button) => button.addEventListener("click", () => setFocus(button.dataset.focus)));
+    focusButtons.forEach((button) => button.addEventListener("click", () => setFocus(button.dataset.focus)));
+    focusSelect.addEventListener("change", () => setFocus(focusSelect.value));
     window.addEventListener("popstate", () => {
       restoreUrlState();
       if (state.projects.length) render();
@@ -290,7 +293,8 @@
       });
       $(".site-header").append(index);
       render();
-      projectControls.forEach((control) => { control.disabled = false; });
+      focusButtons.forEach((button) => { button.disabled = false; });
+      focusSelect.disabled = false;
       if (restoreProjectAnchor && window.location.hash === initialHash &&
           document.activeElement === initialFocus) {
         $(initialHash)?.scrollIntoView({ block: "start", behavior: "instant" });

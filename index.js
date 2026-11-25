@@ -9,6 +9,8 @@
   let cardObserver = null;
   let mobileFrame = null;
   let lastHighlightedId = undefined;
+  let navigationHeading = null;
+  let navigationHighlightTimer;
   // Only technologies verified in the public resume are connected to project cards.
   const ICONS = {
     "JavaScript": "js", "Vue.js": "vue", "D3.js": "d3",
@@ -237,7 +239,24 @@
     syncUrl();
   }
 
+  function highlightNavigationTarget(event) {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const link = event.target.closest('a[href^="#"]');
+    const heading = link && $(link.hash)?.querySelector("h1, h2, h3");
+    if (!heading) return;
+
+    clearTimeout(navigationHighlightTimer);
+    navigationHeading?.classList.toggle("navigation-highlight", false);
+    navigationHeading = heading;
+    heading.classList.toggle("navigation-highlight", true);
+    navigationHighlightTimer = setTimeout(() => {
+      heading.classList.toggle("navigation-highlight", false);
+      navigationHeading = null;
+    }, 1800);
+  }
+
   async function initialize() {
+    const header = $(".site-header");
     const focusButtons = all("[data-focus]");
     const focusSelect = $("#focus-select");
     // Native fragments are resolved before async cards exist. Restore only the
@@ -249,11 +268,13 @@
     const navigationEvents = restoreProjectAnchor ? ["pointerdown", "keydown", "wheel", "touchstart", "hashchange"] : [];
     navigationEvents.forEach((event) => window.addEventListener(event, cancelAnchor, { once: true, passive: true }));
     restoreUrlState();
+    header.addEventListener("click", highlightNavigationTarget);
     focusButtons.forEach((button) => button.addEventListener("click", () => setFocus(button.dataset.focus)));
     focusSelect.addEventListener("change", () => setFocus(focusSelect.value));
     window.addEventListener("popstate", () => {
+      const previousFocus = state.focus;
       restoreUrlState();
-      if (state.projects.length) render();
+      if (state.projects.length && state.focus !== previousFocus) render();
     });
     const topButton = $("#scroll-to-top");
     topButton.addEventListener("click", () => {
@@ -285,13 +306,13 @@
       else mobileLayout.addListener(renderAmbient);
       const index = element("nav", "project-index-nav");
       index.setAttribute("aria-label", "프로젝트 바로가기");
-      index.append(element("p", "rail-label", "작업 목록"));
+      index.append(element("p", "rail-label", "프로젝트 바로가기"));
       state.projects.forEach((project) => {
         const link = element("a", "", project.title);
         link.href = "#project-" + project.id;
         index.append(link);
       });
-      $(".site-header").append(index);
+      header.append(index);
       render();
       focusButtons.forEach((button) => { button.disabled = false; });
       focusSelect.disabled = false;

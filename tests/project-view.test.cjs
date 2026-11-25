@@ -66,6 +66,15 @@ class Element {
   }
   append(...nodes) { for (const node of nodes) node.tagName === 'fragment' ? this.append(...node.children) : this.children.push(node); }
   replaceChildren(...nodes) { this.children = []; this.append(...nodes); }
+  querySelector(selector) {
+    const tags = selector.split(',').map(tag => tag.trim());
+    for (const child of this.children) {
+      if (tags.includes(child.tagName)) return child;
+      const match = child.querySelector(selector);
+      if (match) return match;
+    }
+    return null;
+  }
   addEventListener(name, callback) { this.events[name] = callback; }
   setAttribute(name, value) { this.attributes[name] = value; }
   focus() { this.focused = true; }
@@ -74,6 +83,8 @@ class Element {
 function app({ href = 'https://eastblaze.dev/', response = { ok: true, json: async () => ({ projects }) }, mobile = true } = {}) {
   const root = new Element();
   const elements = Object.fromEntries(['project-list', 'ambient-stack', 'scroll-to-top'].map(id => [id, new Element()]));
+  elements.contact = new Element('footer');
+  elements.contact.append(new Element('h2'));
   const focusSelect = new Element('select');
   focusSelect.value = 'all';
   elements['focus-select'] = focusSelect;
@@ -102,10 +113,16 @@ function app({ href = 'https://eastblaze.dev/', response = { ok: true, json: asy
     addEventListener: (event, callback) => { windowEvents[event] = callback; }, scrollTo() {},
     removeEventListener: (event, callback) => { if (windowEvents[event] === callback) delete windowEvents[event]; },
   };
-  const context = { window, document, URL, console, fetch: async path => { requests.push(path); return response; } };
+  const timers = new Map();
+  let timerId = 0;
+  const context = {
+    window, document, URL, console, fetch: async path => { requests.push(path); return response; },
+    setTimeout: callback => { timers.set(++timerId, callback); return timerId; },
+    clearTimeout: id => timers.delete(id),
+  };
   runInNewContext(readFileSync(require.resolve('../project-view.js'), 'utf8'), context);
   runInNewContext(readFileSync(require.resolve('../index.js'), 'utf8'), context);
-  return { window, elements, header, buttons, focusSelect, requests, windowEvents, ready: () => new Promise(resolve => setImmediate(resolve)),
+  return { window, elements, header, buttons, focusSelect, requests, windowEvents, timers, ready: () => new Promise(resolve => setImmediate(resolve)),
     setMobileLayout: matches => { mobileLayout.matches = matches; layoutChange(); },
     cardIds: () => elements['project-list'].children.map(card => card.dataset.projectId) };
 }
@@ -223,6 +240,38 @@ test('desktop project index preserves public order and is not duplicated by sort
     projects.map(project => ['#project-' + project.id, project.title]));
   ui.buttons[5].events.click(); ui.buttons[0].events.click();
   assert.equal(ui.header.children.filter(node => node.className === 'project-index-nav').length, 1);
+});
+
+test('sidebar links highlight their destination on repeat clicks and across fragment history', async () => {
+  const ui = app(); await ui.ready();
+  const click = (hash, options = {}) => ui.header.events.click({
+    button: 0, target: { closest: () => ({ hash }) }, ...options,
+  });
+  const highlighted = element => element.className === 'navigation-highlight';
+  const contact = ui.elements.contact.children[0];
+  const card = ui.elements['project-list'].children[0];
+  const project = card.querySelector('h3');
+  click('#contact');
+  assert.equal(highlighted(contact), true);
+  const firstTimer = [...ui.timers.keys()][0];
+  ui.window.location.hash = '#contact';
+  click('#contact');
+  assert.equal(highlighted(contact), true);
+  assert.equal(ui.timers.has(firstTimer), false);
+  assert.equal(ui.timers.size, 1);
+  assert.equal(ui.window.scrollY, 0);
+
+  click('#' + card.id, { metaKey: true });
+  assert.equal(highlighted(contact), true);
+  assert.equal(highlighted(project), false);
+  click('#' + card.id);
+  ui.window.location.hash = '#' + card.id;
+  ui.windowEvents.popstate();
+  assert.equal(ui.elements['project-list'].children[0], card);
+  assert.equal(highlighted(contact), false);
+  assert.equal(highlighted(project), true);
+  [...ui.timers.values()][0]();
+  assert.equal(highlighted(project), false);
 });
 
 

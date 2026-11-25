@@ -135,18 +135,18 @@ footer h2 { margin: 0 0 16px; font-size: 25px; font-weight: 550; }
   :root { --frost-opacity: 100%; --frost-filter: none; }
 }
 /* Four repeated cycles cover each slow 45-degree rail; icons stay upright. */
-.ambient-stack { --icon-size: 60px; --icon-step: 88px; position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; mask-image: linear-gradient(to bottom, transparent, #000 9%, #000 92%, transparent); }
-.ambient-rail { position: absolute; width: 0; height: var(--icon-size); left: 50%; top: 50%; transform: rotate(-45deg); transform-origin: 0 50%; }
-.ambient-rail:nth-child(1) { left: 18%; top: 18%; }
-.ambient-rail:nth-child(3) { left: 82%; top: 82%; }
-.ambient-lane { position: absolute; left: 0; top: 0; display: flex; width: max-content; height: var(--icon-size); align-items: center; animation: blueprint-diagonal 160s linear infinite; transform-origin: 0 50%; will-change: transform; }
+.ambient-stack { --rail-spacing: 200px; --rail-offset: calc(var(--rail-spacing) * .70710678); position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; mask-image: linear-gradient(to bottom, transparent, #000 9%, #000 92%, transparent); }
+.ambient-rail { position: absolute; width: 0; height: 66px; left: 50%; top: 50%; transform: rotate(-45deg); transform-origin: 0 50%; }
+/* Move along both axes so rail spacing is measured perpendicular to the flow. */
+.ambient-rail:nth-child(1) { left: calc(50% - var(--rail-offset)); top: calc(50% - var(--rail-offset)); }
+.ambient-rail:nth-child(3) { left: calc(50% + var(--rail-offset)); top: calc(50% + var(--rail-offset)); }
+.ambient-lane { position: absolute; left: 0; top: 0; display: flex; width: max-content; height: 66px; align-items: center; animation: blueprint-diagonal 160s linear infinite; transform-origin: 0 50%; will-change: transform; }
 .ambient-rail:nth-child(2) > .ambient-lane { animation-duration: 135s; animation-direction: reverse; }
 .ambient-rail:nth-child(3) > .ambient-lane { animation-duration: 185s; }
-.ambient-sequence { --icon-gap: calc(var(--icon-step) - var(--icon-size)); display: flex; flex: 0 0 auto; gap: var(--icon-gap); padding-right: var(--icon-gap); align-items: center; }
-.ambient-icon { display: block; flex: 0 0 auto; width: var(--icon-size); height: var(--icon-size); object-fit: contain; opacity: var(--neutral-icon); filter: grayscale(1) saturate(.25); transform: rotate(45deg) scale(.94); transition: opacity .45s ease, filter .45s ease, transform .45s ease; }
+.ambient-sequence { display: flex; flex: 0 0 auto; min-width: 130vmax; justify-content: space-around; gap: clamp(38px, 6vw, 90px); padding-right: clamp(38px, 6vw, 90px); align-items: center; }
+.ambient-icon { display: block; flex: 0 0 auto; width: clamp(46px, 5vw, 66px); height: clamp(46px, 5vw, 66px); object-fit: contain; opacity: var(--neutral-icon); filter: grayscale(1) saturate(.25); transform: rotate(45deg) scale(.94); transition: opacity .45s ease, filter .45s ease, transform .45s ease; }
 .ambient-icon.is-active { opacity: var(--active-icon); filter: grayscale(0) saturate(1); transform: rotate(45deg) scale(1.13); }
-/* A quarter of the lane is one cycle. Center it across the rail's visible span. */
-@keyframes blueprint-diagonal { from { transform: translateX(-37.5%); } to { transform: translateX(-62.5%); } }
+@keyframes blueprint-diagonal { from { transform: translateX(-25%); } to { transform: translateX(-50%); } }
 @media (max-width: 1050px) {
   .shell { width: calc(100% - 48px); grid-template-columns: 145px minmax(0, 1fr); }
   .shell > .site-header { padding-right: 18px; }
@@ -183,7 +183,8 @@ footer h2 { margin: 0 0 16px; font-size: 25px; font-weight: 550; }
   .scope-copy { font-size: 13px; margin-bottom: 20px; }
   .skill-grid { gap: 20px; }
   .tech-groups { grid-template-columns: 1fr; gap: 0; }
-  .ambient-stack { --icon-size: 45px; }
+  .ambient-rail, .ambient-lane { height: 45px; }
+  .ambient-icon { width: 45px; height: 45px; }
 }
 @media (max-width: 350px) {
   .shell { width: calc(100% - 28px); }
@@ -191,6 +192,6 @@ footer h2 { margin: 0 0 16px; font-size: 25px; font-weight: 550; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .ambient-lane { animation: none; transform: translateX(-37.5%); will-change: auto; }
+  .ambient-lane { animation: none; transform: translateX(-25%); will-change: auto; }
   .ambient-icon, .project-card, .scroll-to-top { transition: none; }
 }

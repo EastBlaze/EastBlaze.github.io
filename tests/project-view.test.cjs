@@ -71,7 +71,7 @@ class Element {
   focus() { this.focused = true; }
   scrollIntoView() { this.scrolledIntoView = true; }
 }
-function app({ href = 'https://eastblaze.dev/', response = { ok: true, json: async () => ({ projects }) } } = {}) {
+function app({ href = 'https://eastblaze.dev/', response = { ok: true, json: async () => ({ projects }) }, mobile = true } = {}) {
   const root = new Element();
   const elements = Object.fromEntries(['project-list', 'ambient-stack', 'scroll-to-top'].map(id => [id, new Element()]));
   const logo = new Element('a'); logo.className = 'logo';
@@ -91,9 +91,11 @@ function app({ href = 'https://eastblaze.dev/', response = { ok: true, json: asy
     createDocumentFragment: () => new Element('fragment'), createTextNode: text => Object.assign(new Element('text'), { textContent: text }),
   };
   const requests = [], windowEvents = [];
+  let layoutChange;
+  const mobileLayout = { matches: mobile, addEventListener: (_, callback) => { layoutChange = callback; } };
   const window = {
     location: new URL(href), history: { replaceState: (_, __, url) => { window.location = new URL(url); } },
-    matchMedia: () => ({ matches: true, addEventListener() {} }), scrollY: 0,
+    matchMedia: query => query === '(max-width: 760px)' ? mobileLayout : { matches: true, addEventListener() {} }, scrollY: 0,
     addEventListener: (event, callback) => { windowEvents[event] = callback; }, scrollTo() {},
     removeEventListener: (event, callback) => { if (windowEvents[event] === callback) delete windowEvents[event]; },
   };
@@ -101,6 +103,7 @@ function app({ href = 'https://eastblaze.dev/', response = { ok: true, json: asy
   runInNewContext(readFileSync(require.resolve('../project-view.js'), 'utf8'), context);
   runInNewContext(readFileSync(require.resolve('../index.js'), 'utf8'), context);
   return { window, elements, header, buttons, requests, windowEvents, ready: () => new Promise(resolve => setImmediate(resolve)),
+    setMobileLayout: matches => { mobileLayout.matches = matches; layoutChange(); },
     cardIds: () => elements['project-list'].children.map(card => card.dataset.projectId) };
 }
 
@@ -161,6 +164,26 @@ test('blueprint cards expose every original evidence text with stable accessible
     assert.equal(rail.className, 'ambient-rail');
     assert.equal(rail.children[0].children.length, 4);
   }
+});
+
+test('ambient rows follow the layout while preserving the active project highlight', async () => {
+  const ui = app({ mobile: false }); await ui.ready();
+  const stack = ui.elements['ambient-stack'];
+  const card = ui.elements['project-list'].children.find(node => node.dataset.projectId === 'pig-management');
+  const icons = () => stack.children.flatMap(rail => rail.children[0].children.flatMap(sequence => sequence.children));
+  assert.equal(stack.children.length, 5);
+  assert.equal(icons().length, 240);
+  card.events.mouseenter();
+  for (const [mobile, railCount] of [[true, 3], [false, 5]]) {
+    ui.setMobileLayout(mobile);
+    assert.equal(stack.children.length, railCount);
+    assert.equal(icons().length, railCount * 48);
+    const highlighted = icons().filter(icon => icon.className.split(' ').includes('is-active'));
+    assert.equal(highlighted.length, railCount * 4);
+    assert.ok(highlighted.every(icon => icon.dataset.techIcon === 'aws'));
+  }
+  card.events.mouseleave();
+  assert.ok(icons().every(icon => icon.className === 'ambient-icon'));
 });
 
 

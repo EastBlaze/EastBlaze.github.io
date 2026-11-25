@@ -4,6 +4,7 @@
   const { isFocus, readFocus, focusUrl, rankProjects } = window.ResumeView;
   const state = { focus: "all", projects: [], hoveredProjectId: null, focusedProjectId: null, visibleProjectId: null };
   const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+  const mobileLayout = window.matchMedia("(max-width: 760px)");
   const centerCandidates = new Set();
   let cardObserver = null;
   let mobileFrame = null;
@@ -36,7 +37,8 @@
     const root = $("#ambient-stack");
     if (!root) return;
     const fragment = document.createDocumentFragment();
-    for (const row of AMBIENT_ROWS) {
+    const rows = mobileLayout.matches ? AMBIENT_ROWS : [...AMBIENT_ROWS, AMBIENT_ROWS[2], AMBIENT_ROWS[0]];
+    for (const row of rows) {
       const rail = element("div", "ambient-rail");
       const lane = element("div", "ambient-lane");
       for (let repeat = 0; repeat < 4; repeat++) {
@@ -58,6 +60,7 @@
       fragment.append(rail);
     }
     root.replaceChildren(fragment);
+    lastHighlightedId = undefined;
     updateHighlights();
   }
 
@@ -275,6 +278,8 @@
       if (!Array.isArray(payload.projects)) throw new Error("잘못된 데이터 형식");
       state.projects = payload.projects;
       renderAmbient();
+      if (mobileLayout.addEventListener) mobileLayout.addEventListener("change", renderAmbient);
+      else mobileLayout.addListener(renderAmbient);
       const index = element("nav", "project-index-nav");
       index.setAttribute("aria-label", "프로젝트 바로가기");
       index.append(element("p", "rail-label", "작업 목록"));

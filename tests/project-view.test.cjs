@@ -71,9 +71,12 @@ class Element {
   focus() { this.focused = true; }
   scrollIntoView() { this.scrolledIntoView = true; }
 }
-function app({ href = 'https://eastblaze.dev/', response = { ok: true, json: async () => ({ projects }) } } = {}) {
+function app({ href = 'https://eastblaze.dev/', response = { ok: true, json: async () => ({ projects }) }, mobile = true } = {}) {
   const root = new Element();
   const elements = Object.fromEntries(['project-list', 'ambient-stack', 'scroll-to-top'].map(id => [id, new Element()]));
+  const focusSelect = new Element('select');
+  focusSelect.value = 'all';
+  elements['focus-select'] = focusSelect;
   const logo = new Element('a'); logo.className = 'logo';
   const buttons = ['all', 'backend', 'frontend', 'ai', 'operations', 'mobile'].map(focus => {
     const button = new Element('button'); button.dataset.focus = focus;
@@ -91,16 +94,19 @@ function app({ href = 'https://eastblaze.dev/', response = { ok: true, json: asy
     createDocumentFragment: () => new Element('fragment'), createTextNode: text => Object.assign(new Element('text'), { textContent: text }),
   };
   const requests = [], windowEvents = [];
+  let layoutChange;
+  const mobileLayout = { matches: mobile, addEventListener: (_, callback) => { layoutChange = callback; } };
   const window = {
     location: new URL(href), history: { replaceState: (_, __, url) => { window.location = new URL(url); } },
-    matchMedia: () => ({ matches: true, addEventListener() {} }), scrollY: 0,
+    matchMedia: query => query === '(max-width: 760px)' ? mobileLayout : { matches: true, addEventListener() {} }, scrollY: 0,
     addEventListener: (event, callback) => { windowEvents[event] = callback; }, scrollTo() {},
     removeEventListener: (event, callback) => { if (windowEvents[event] === callback) delete windowEvents[event]; },
   };
   const context = { window, document, URL, console, fetch: async path => { requests.push(path); return response; } };
   runInNewContext(readFileSync(require.resolve('../project-view.js'), 'utf8'), context);
   runInNewContext(readFileSync(require.resolve('../index.js'), 'utf8'), context);
-  return { window, elements, header, buttons, requests, windowEvents, ready: () => new Promise(resolve => setImmediate(resolve)),
+  return { window, elements, header, buttons, focusSelect, requests, windowEvents, ready: () => new Promise(resolve => setImmediate(resolve)),
+    setMobileLayout: matches => { mobileLayout.matches = matches; layoutChange(); },
     cardIds: () => elements['project-list'].children.map(card => card.dataset.projectId) };
 }
 
@@ -110,9 +116,12 @@ test('full app initializes without search elements, clears legacy needs before d
   const ui = app({ href: 'https://eastblaze.dev/?needs=aws&focus=frontend#projects', response: { ok: true, json: () => pending } });
   assert.equal(ui.window.location.search, '?focus=frontend');
   assert.ok(ui.buttons.every(button => button.disabled));
+  assert.equal(ui.focusSelect.disabled, true);
   resolveData({ projects }); await ui.ready();
   assert.deepEqual(ui.requests, ['./projects.json']);
   assert.ok(ui.buttons.every(button => !button.disabled));
+  assert.equal(ui.focusSelect.disabled, false);
+  assert.equal(ui.focusSelect.value, 'frontend');
   assert.equal(ui.cardIds()[0], 'solar-dashboard');
   assert.equal(ui.cardIds().length, 5);
   assert.equal(ui.buttons[2].attributes['aria-pressed'], 'true');
@@ -134,11 +143,33 @@ test('repeated field choices restore base order and popstate cannot revive searc
   assert.equal(ui.buttons[3].attributes['aria-pressed'], 'true');
 });
 
+test('mobile and desktop order controls stay in sync with card order and history', async () => {
+  const ui = app(); await ui.ready();
+  ui.focusSelect.value = 'frontend';
+  ui.focusSelect.events.change();
+  assert.equal(ui.cardIds()[0], 'solar-dashboard');
+  assert.equal(ui.cardIds().length, projects.length);
+  assert.equal(ui.buttons[2].attributes['aria-pressed'], 'true');
+  assert.equal(ui.window.location.search, '?focus=frontend');
+
+  ui.setMobileLayout(false);
+  ui.buttons[0].events.click();
+  assert.equal(ui.focusSelect.value, 'all');
+  assert.deepEqual(ui.cardIds(), projects.map(project => project.id));
+
+  ui.window.location = new URL('https://eastblaze.dev/?focus=mobile');
+  ui.windowEvents.popstate();
+  assert.equal(ui.focusSelect.value, 'mobile');
+  assert.equal(ui.buttons[5].attributes['aria-pressed'], 'true');
+  assert.equal(ui.cardIds()[0], 'social-app');
+});
+
 test('failed project loading leaves readable failure, disabled controls, and clean legacy URL', async () => {
   for (const response of [{ ok: false, status: 503 }, { ok: true, json: async () => ({ projects: null }) }]) {
     const ui = app({ href: 'https://eastblaze.dev/?needs=aws', response }); await ui.ready();
     assert.equal(ui.window.location.search, '');
     assert.ok(ui.buttons.every(button => button.disabled));
+    assert.equal(ui.focusSelect.disabled, true);
     assert.match(ui.elements['project-list'].children[0].textContent, /불러오지 못했습니다/);
   }
 });
@@ -161,6 +192,26 @@ test('blueprint cards expose every original evidence text with stable accessible
     assert.equal(rail.className, 'ambient-rail');
     assert.equal(rail.children[0].children.length, 4);
   }
+});
+
+test('ambient rows follow the layout while preserving the active project highlight', async () => {
+  const ui = app({ mobile: false }); await ui.ready();
+  const stack = ui.elements['ambient-stack'];
+  const card = ui.elements['project-list'].children.find(node => node.dataset.projectId === 'pig-management');
+  const icons = () => stack.children.flatMap(rail => rail.children[0].children.flatMap(sequence => sequence.children));
+  assert.equal(stack.children.length, 5);
+  assert.equal(icons().length, 240);
+  card.events.mouseenter();
+  for (const [mobile, railCount] of [[true, 3], [false, 5]]) {
+    ui.setMobileLayout(mobile);
+    assert.equal(stack.children.length, railCount);
+    assert.equal(icons().length, railCount * 48);
+    const highlighted = icons().filter(icon => icon.className.split(' ').includes('is-active'));
+    assert.equal(highlighted.length, railCount * 4);
+    assert.ok(highlighted.every(icon => icon.dataset.techIcon === 'aws'));
+  }
+  card.events.mouseleave();
+  assert.ok(icons().every(icon => icon.className === 'ambient-icon'));
 });
 
 

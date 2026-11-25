@@ -67,10 +67,13 @@ browser behavior. Verify the actual production page after deployment too.
 The B4 presentation uses a small identity line, a work-led introduction,
 visible project evidence, and a desktop project index. The `.md` and theme
 controls form one 88×44 group below the desktop logo or at the mobile right edge.
+The desktop sidebar fits its content and scrolls independently on short windows.
 The theme follows the system until changed for this page. Decorative icons move
-on three slow 45-degree rails, with reduced-motion respected from first paint.
+on five slow 45-degree rails on desktop and three on mobile, with reduced-motion
+respected from first paint.
 
-Field ordering is available under the compact **분야별 우선 보기** disclosure.
+Desktop field ordering uses chips below the Projects heading. On mobile, the
+same ordering is available in a native select beside the heading.
 All five projects remain visible; no job-description search is enabled.
 `projects.json` remains unchanged. The original introduction is preserved under
 skills and in the generated Markdown. Project evidence is never rewritten by
